@@ -106,18 +106,11 @@
     }
   };
 
-  // ---- vim command line ----
-  const cmdline=document.createElement('div');
-  cmdline.className='vim-cmdline';
-  cmdline.innerHTML=
-    '<span class="vim-prompt">/</span>'+
-    '<input class="vim-input" placeholder="search">'+
-    '<span class="vim-count"></span>';
-  document.body.appendChild(cmdline);
-
-  const cmdInput=cmdline.querySelector('.vim-input');
-  const cmdCount=cmdline.querySelector('.vim-count');
-  let cmdActive=false;
+  // ---- footer search ----
+  const footerCmd=document.querySelector('.footer-cmd');
+  const cmdInput=footerCmd?.querySelector('.cmd-input');
+  const cmdCount=footerCmd?.querySelector('.cmd-count');
+  let searchActive=false;
   let searchQuery='';
   let searchMatches=[];
   let searchMatchIdx=-1;
@@ -132,32 +125,6 @@
     searchMatchIdx=-1;
   };
 
-  const openCmdline=()=>{
-    cmdline.classList.add('open');
-    cmdInput.value='';
-    cmdInput.focus();
-    cmdActive=true;
-    searchQuery='';
-    cmdCount.textContent='';
-  };
-
-  const closeCmdline=(keepState)=>{
-    cmdline.classList.remove('open');
-    cmdActive=false;
-    if(!keepState){
-      cmdInput.value='';
-      searchQuery='';
-      cmdCount.textContent='';
-      if(isHome){
-        postLinks.forEach(p=>p.style.display='');
-        selected=-1;
-        updateFooter();
-      }else{
-        clearHighlights();
-      }
-    }
-  };
-
   const doBlogSearch=(q)=>{
     clearHighlights();
     if(!q) return;
@@ -165,14 +132,13 @@
     if(!article) return;
     const walker=document.createTreeWalker(article,NodeFilter.SHOW_TEXT,{
       acceptNode:n=>{
-        if(n.parentElement.closest('pre,script,style,.vim-cmdline,h1,h2,h3,h4,h5,h6'))
+        if(n.parentElement.closest('pre,script,style,.footer-cmd,h1,h2,h3,h4,h5,h6'))
           return NodeFilter.FILTER_REJECT;
         return n.textContent.trim()?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_SKIP;
       }
     });
     const nodes=[];
     while(walker.nextNode()) nodes.push(walker.currentNode);
-
     const lower=q.toLowerCase();
     for(const node of nodes){
       const text=node.textContent;
@@ -211,70 +177,96 @@
     setSelected(postLinks.indexOf(visible[next]));
   };
 
-  // cmdline: filter/scan on keystroke
-  cmdInput.addEventListener('input',()=>{
-    const q=cmdInput.value.trim();
-    searchQuery=q;
-    if(!q){
-      if(isHome){
-        postLinks.forEach(p=>p.style.display='');
-        cmdCount.textContent='';
-      }else{
-        clearHighlights();
-        cmdCount.textContent='';
-      }
-      return;
-    }
-    if(isHome){
-      const lower=q.toLowerCase();
-      let visible=0;
-      postLinks.forEach(p=>{
-        const title=(p.querySelector('.post-title')?.textContent||'').toLowerCase();
-        const tags=(p.querySelector('.post-tags')?.textContent||'').toLowerCase();
-        const show=title.includes(lower)||tags.includes(lower);
-        p.style.display=show?'':'none';
-        if(show) visible++;
-      });
-      cmdCount.textContent=visible?`${visible}p`:'';
-    }else{
-      doBlogSearch(q);
-      cmdCount.textContent=searchMatches.length?`${searchMatches.length}m`:'';
-    }
-  });
+  const openSearch=()=>{
+    footerCmd.classList.add('active');
+    footerHints.classList.add('hidden');
+    cmdInput.value='';
+    cmdInput.focus();
+    searchActive=true;
+    searchQuery='';
+    cmdCount.textContent='';
+  };
 
-  // cmdline: enter = execute, escape = cancel
-  cmdInput.addEventListener('keydown',(e)=>{
-    if(e.key==='Escape'){
-      e.preventDefault();e.stopPropagation();
-      closeCmdline(false);
+  const closeSearch=()=>{
+    footerCmd.classList.remove('active');
+    footerHints.classList.remove('hidden');
+    cmdInput.value='';
+    cmdInput.blur();
+    searchActive=false;
+    searchQuery='';
+    cmdCount.textContent='';
+    if(isHome){
+      postLinks.forEach(p=>p.style.display='');
+      selected=-1;
+      updateFooter();
+    }else{
+      clearHighlights();
     }
-    if(e.key==='Enter'){
-      e.preventDefault();e.stopPropagation();
-      if(isHome&&searchQuery){
-        const visible=postLinks.filter(p=>p.style.display!=='none');
-        if(visible.length) setSelected(postLinks.indexOf(visible[0]));
-      }else if(!isHome&&searchMatches.length){
-        gotoMatch(0);
+  };
+
+  if(cmdInput){
+    cmdInput.addEventListener('input',()=>{
+      const q=cmdInput.value.trim();
+      searchQuery=q;
+      if(!q){
+        if(isHome){
+          postLinks.forEach(p=>p.style.display='');
+          cmdCount.textContent='';
+        }else{
+          clearHighlights();
+          cmdCount.textContent='';
+        }
+        return;
       }
-      closeCmdline(true);
-    }
-  });
+      if(isHome){
+        const lower=q.toLowerCase();
+        let visible=0;
+        postLinks.forEach(p=>{
+          const title=(p.querySelector('.post-title')?.textContent||'').toLowerCase();
+          const tags=(p.querySelector('.post-tags')?.textContent||'').toLowerCase();
+          const show=title.includes(lower)||tags.includes(lower);
+          p.style.display=show?'':'none';
+          if(show) visible++;
+        });
+        cmdCount.textContent=visible?`${visible}p`:'0p';
+      }else{
+        doBlogSearch(q);
+        cmdCount.textContent=searchMatches.length?`${searchMatches.length}m`:'0m';
+      }
+    });
+
+    cmdInput.addEventListener('keydown',(e)=>{
+      if(e.key==='Escape'){
+        e.preventDefault();e.stopPropagation();
+        closeSearch();
+      }
+      if(e.key==='Enter'){
+        e.preventDefault();e.stopPropagation();
+        if(isHome&&searchQuery){
+          const visible=postLinks.filter(p=>p.style.display!=='none');
+          if(visible.length) setSelected(postLinks.indexOf(visible[0]));
+        }else if(!isHome&&searchMatches.length){
+          gotoMatch(searchMatchIdx<0?0:searchMatchIdx);
+        }
+        cmdInput.blur();
+      }
+    });
+
+    cmdInput.addEventListener('focus',()=>{searchActive=true});
+    cmdInput.addEventListener('blur',()=>{searchActive=false});
+  }
 
   // ---- global key bindings ----
   document.addEventListener('keydown',(e)=>{
-    // cmdline handles its own keys
-    if(cmdActive) return;
-    // don't intercept typing in inputs
+    if(searchActive) return;
     if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
 
-    // / — open search
-    if(e.key==='/'&&!e.metaKey&&!e.ctrlKey){
+    if(e.key==='/'&&!e.metaKey&&!e.ctrlKey&&footerCmd){
       e.preventDefault();
-      openCmdline();
+      openSearch();
       return;
     }
 
-    // n / N — next/prev match (after search)
     if((e.key==='n'||e.key==='N')&&!e.metaKey&&!e.ctrlKey&&searchQuery){
       e.preventDefault();
       const dir=e.key==='n'?1:-1;
@@ -286,15 +278,13 @@
       return;
     }
 
-    // escape — clear everything
     if(e.key==='Escape'){
-      closeCmdline(false);
+      closeSearch();
       selected=-1;
       postLinks.forEach(a=>a.classList.remove('selected'));
       updateFooter();
     }
 
-    // j / k — navigate posts (home) or scroll page (blog)
     if(e.key==='j'&&!e.metaKey&&!e.ctrlKey){
       e.preventDefault();
       if(isPost&&!postLinks.length){
@@ -320,7 +310,6 @@
       return;
     }
 
-    // g g — jump to first
     if(e.key==='g'&&!e.metaKey&&!e.ctrlKey){
       if(!waitingForSecondG){
         waitingForSecondG=true;
@@ -339,7 +328,6 @@
     }
     waitingForSecondG=false;
 
-    // G — jump to last
     if(e.key==='G'&&!e.metaKey&&!e.ctrlKey&&!e.shiftKey){
       if(postLinks.length){
         e.preventDefault();
@@ -351,14 +339,12 @@
       return;
     }
 
-    // enter / l — open selected
     if((e.key==='Enter'||(e.key==='l'&&!e.metaKey&&!e.ctrlKey))&&selected>=0){
       e.preventDefault();
       openSelected();
       return;
     }
 
-    // h — up within site
     if(e.key==='h'&&!e.metaKey&&!e.ctrlKey){
       e.preventDefault();
       if(isPost){

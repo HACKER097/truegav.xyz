@@ -1,8 +1,15 @@
 <footer>
   <span>&copy; {{ now.Year }} {{ .Site.Params.author }}</span>
-  <div class="footer-hints">
-    <span><kbd>j</kbd>/<kbd>k</kbd> navigate</span>
-    <span><kbd>/</kbd> search</span>
-    <span><kbd>enter</kbd> open</span>
+  <div class="footer-right">
+    <div class="footer-hints">
+      <span><kbd>j</kbd>/<kbd>k</kbd> navigate</span>
+      <span><kbd>/</kbd> search</span>
+      <span><kbd>enter</kbd> open</span>
+    </div>
+    <div class="footer-cmd">
+      <span class="cmd-prompt">/</span>
+      <input type="text" class="cmd-input" placeholder="search">
+      <span class="cmd-count"></span>
+    </div>
   </div>
 </footer>
