@@ -1,0 +1,20 @@
+{
+  "name": "website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "hugo && node scripts/shikify.mjs",
+    "dev": "node scripts/dev.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@shikijs/rehype": "^4.0.2",
+    "node-html-parser": "^7.1.0",
+    "rehype-cli": "^12.0.1"
+  }
+}

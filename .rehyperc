@@ -1,0 +1,7 @@
+{
+  "plugins": [
+    ["@shikijs/rehype", {
+      "theme": "./scripts/slate-xp-extra.json"
+    }]
+  ]
+}

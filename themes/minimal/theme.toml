@@ -1,0 +1,7 @@
+name = "minimal"
+description = "a minimal dark hacker blog theme"
+tags = ["minimal", "dark", "blog"]
+min_version = "0.100.0"
+
+[author]
+  name = "truegav"

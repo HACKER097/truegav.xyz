@@ -1,0 +1,16 @@
+{{ define "main" }}
+<p class="tagline"><code>{{ .Site.Params.description }}</code></p>
+<div class="section-row">
+  <span class="section-label">posts</span>
+  <span class="section-count">{{ printf "%02d" (len (where .Site.RegularPages "Section" "posts")) }}</span>
+</div>
+<div class="post-list">
+  {{ range where .Site.RegularPages "Section" "posts" }}
+  <a href="{{ .RelPermalink }}" class="post">
+    <span class="post-date">{{ .Date.Format "2006-01-02" }}</span>
+    <span class="post-title">{{ .Title }}</span>
+    {{ with .Params.tags }}<span class="post-tags">{{ delimit . " · " }}</span>{{ end }}
+  </a>
+  {{ end }}
+</div>
+{{ end }}
