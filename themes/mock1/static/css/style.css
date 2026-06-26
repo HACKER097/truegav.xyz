@@ -766,6 +766,12 @@ body {
   border-radius: 2px;
 }
 
+.article-content pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
 .article-content pre,
 .article-content .highlight pre {
   background: var(--surface);
