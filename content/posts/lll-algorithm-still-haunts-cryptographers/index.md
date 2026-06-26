@@ -1,13 +1,13 @@
 +++
 date = '2024-01-22T14:00:00+05:30'
 draft = false
-title = 'A 1982 Paper That Still Makes Cryptographers Sweat'
-tags = ['Cryptography', 'Lattices', 'LLL', 'Math']
+title = "A 1982 Paper Broke Knapsack Crypto and Nobody Noticed for a Fucking Decade"
+tags = ['Cryptography', 'Lattices', 'LLL']
 +++
 
-Lenstra, Lenstra, Lovasz walked into a bar in 1982. They left with an algorithm that broke knapsack cryptosystems, enabled Coppersmith's method, and made RSA with small exponents a death sentence.
+Lenstra, Lenstra, and Lovász published their lattice reduction algorithm in 1982. It runs in polynomial time. It finds short vectors approximately. It broke half the cryptosystems of the era and nobody noticed for ten years.
 
-The algorithm: LLL. It finds short vectors in lattices. In polynomial time. Approximately.
+## The Algorithm
 
 ```python
 def lll_reduce(basis, delta=0.75):
@@ -29,22 +29,20 @@ def lll_reduce(basis, delta=0.75):
     return basis
 ```
 
-The approximation factor `delta` controls everything. 0.75 = fast but sloppy. 0.99 = slow but devastating. Cryptanalysts use 0.99.
+Delta controls everything. 0.75 is fast but sloppy. 0.99 is slow but devastating. Cryptanalysts use 0.99 because they're not in a hurry and your crypto is the target.
 
-## What It Broke
+## What It Killed
 
-- Merkle-Hellman knapsack: density below 0.9408 = broken. Almost all real parameters fell below it.
-- RSA with small `e`: Coppersmith built on LLL to find small roots modulo N. If you use `e=3` without padding, LLL can recover your plaintext.
-- Random number generator seeds: if you know a fraction of the private key bits, LLL can reconstruct the rest.
+Merkle-Hellman knapsack cryptosystem. The basis behind every knapsack is a lattice. If the density `d = n / log2(max element)` is below 0.9408, LLL finds the solution. Almost every proposed parameter set fell below this threshold. The entire cryptosystem died.
 
-## What It Didn't Break
+Coppersmith's method for finding small roots modulo N. Built entirely on LLL. If you use RSA with `e=3` and no padding, Coppersmith can recover your plaintext from the ciphertext. The method works by constructing a lattice where the shortest vector encodes the small root, then running LLL to find it.
 
-Post-quantum crypto. Kyber, Dilithium, NTRU — they're built on lattice problems specifically designed to resist LLL. Higher dimensions (400+), better distributions, smarter parameters.
+Random number generator state reconstruction. If you know a fraction of the private key bits, LLL can find the rest. The key bits form a lattice, the known bits are constraints, and LLL finds the unique vector that satisfies all constraints.
 
-But the gap between what LLL can break and what it can't is not well understood. The security of NIST's post-quantum standards depends on this gap staying wide.
+## What It Didn't Kill
 
----
+Post-quantum crypto. Kyber and Dilithium are built on lattice problems specifically designed to resist LLL. Dimension 400 plus, noise distributions that hide the short vectors, parameters that maximize the gap between what LLL can approximate and what the scheme needs.
 
-40 years. The algorithm is 40 years old and it's still the first thing cryptanalysts reach for.
+But that gap is not well understood. The exact complexity of block-Korkine-Zolotarev (BKZ, the modern extension of LLL) as a function of block size is still open research. NIST's standards assume particular BKZ running times. Those assumptions could be wrong.
 
-Not bad for a paper from 1982.
+Forty years and it's still the first tool every cryptanalyst reaches for. Not bad for a 1982 paper about geometry.

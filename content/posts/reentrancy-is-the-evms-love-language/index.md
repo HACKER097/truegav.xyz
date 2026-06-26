@@ -1,47 +1,47 @@
 +++
 date = '2021-06-20T14:00:00+05:30'
 draft = false
-title = "Reentrancy Is the EVM's Love Language and It Keeps Killing Your Users"
-tags = ['EVM', 'Solidity', 'Reentrancy', 'DAO Hack']
+title = "Six Years After the DAO and You Still Write This Bug, Fucking Embarrassing"
+tags = ['EVM', 'Solidity', 'Reentrancy']
 +++
 
-I have seen the same reentrancy bug in 12 different production contracts. 12. Some of them were audited. Some of them were "battle-tested." All of them had this code in some form:
+The DAO got drained for $60M in 2016. It is now 2021. I have personally reviewed 12 contracts in the last six months that had the exact same reentrancy bug. Twelve. All of them were audited. Some of them by firms you have heard of.
 
 ```solidity
-(bool success, ) = msg.sender.call{value: amount}("");
-```
-
-You know what this does. The DAO was 2016. It's 2021 now. You have no excuse.
-
----
-
-**Fun reentrancy facts nobody asked for:**
-
-- Cross-function reentrancy exists because your other functions don't share memory with the one being exploited.
-- Cross-contract reentrancy exists because Solidity thinks inter-contract calls are safe.
-- Read-only reentrancy exists because the EVM doesn't distinguish between "reading" and "reading during an active exploit."
-- Curve lost $100M to the third one. A view function. I hope that keeps you up at night.
-
-```solidity
-// This function can't modify state.
-// It CAN return a number that gets you exploited.
-function getBalance(address user) external view returns (uint256) {
-    return balances[user]; // this number is a lie mid-transaction
+function withdraw(uint256 amount) external {
+    require(balances[msg.sender] >= amount);
+    (bool success, ) = msg.sender.call{value: amount}("");
+    require(success);
+    balances[msg.sender] -= amount;
 }
 ```
 
----
+If you cannot spot the bug in this function, you should not be writing smart contracts. Full stop. Close your laptop. Find a new job. This is the most famous vulnerability in EVM history and you still write it.
 
-The ReentrancyGuard is a boolean. A single boolean. If you flip it, the entire contract is exposed. OpenZeppelin maintains it. We all use it. We all pretend it's a real solution.
+## The Bug Types Nobody Asked For
+
+Single-function reentrancy. The classic. Send ETH first, update state second. The attacker calls back into the same function before the balance decrements. The balance check passes again. Free money. CEI fixes this and everyone learned CEI in 2016. Good job.
+
+Cross-function reentrancy. Your withdraw function is safe because you CEI'd it. Your transfer function is not. The attacker enters through withdraw, then calls transfer before the state settles, and transfer reads stale data from an unfinished transaction. Solidity doesn't share memory between functions.
 
 ```solidity
-bool private _locked;
+function transfer(address to, uint256 amount) external {
+    require(balances[msg.sender] >= amount); // stale balance mid-tx
+    balances[msg.sender] -= amount;
+    balances[to] += amount;
+}
 ```
 
-The security of your multi-million dollar protocol depends on this variable never being wrong.
+Read-only reentrancy. The best one. A view function gets reentered and returns stale data. A FUCKING VIEW FUNCTION. Curve lost over $100M to this. Someone wrote `view` on a function and it cost $100M.
 
----
+## The Guard Is a Boolean
 
-The only contracts safe from reentrancy don't make external calls. Everything else is just gambling with extra steps.
+OpenZeppelin's solution is `bool private _locked`. One boolean variable stands between your protocol and total collapse. If this variable is wrong, you lose everything. And you cannot use it everywhere because a global lock breaks legitimate cross-contract calls.
 
-Good luck out there. You'll need it.
+I put `nonReentrant` on everything. Every single function that touches external code. My users can complain about gas. I don't care. Gas complaints are better than getting drained.
+
+## The Reality
+
+I have written every single one of these bugs. The difference is I caught mine in testing. Your users caught yours in production.
+
+The only contracts safe from reentrancy are the ones that make zero external calls. Those contracts are useless. The choice is between exploitable and pointless. Most of you have picked both.

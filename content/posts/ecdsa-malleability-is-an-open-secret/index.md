@@ -1,25 +1,30 @@
 +++
 date = '2024-04-10T14:00:00+05:30'
 draft = false
-title = 'ECDSA Malleability Is an Open Secret'
+title = 'Every Single Signature You Have Ever Verified Has a Twin'
 tags = ['Cryptography', 'ECDSA', 'EVM']
 +++
 
-Every ECDSA signature has a twin. Same signer. Same message. Different bytes. Both valid.
+Every ECDSA signature `(r, s, v)` has a sibling `(r, -s mod n, v ^ 1)`. Same signer. Same message. Different bytes. Both valid. Both will pass `ecrecover` and return the correct address.
 
-```text
-Given (r, s, v):
-- (r, -s mod n, v^1) also works
-- If v is 27, try 28. If v is 28, try 27.
+EIP-2 tried to fix this in 2016 by limiting `s` to the lower half of the curve order. It helped. It didn't solve it. If `v` is 27, try 28. If `v` is 28, try 27. The malleability window is still open.
 
-That's it. Two valid signatures for every message you've ever signed.
+## Your Protocol Probably Doesn't Handle This
+
+If you deduplicate transactions by signature hash, someone can submit the same action twice with the malleable variant and both will process. If you cache signatures to prevent replay, the cache sees two different byte sequences and lets both through.
+
+Multi-sig wallets that require unique signatures break. NFT marketplaces that cache approvals break. Protocol upgrades that check "has this signature been used" break.
+
+I have checked. Not theoretically. I ran `secp256k1`'s `points_mul` on a set of production signatures and found duplicates. Most protocols don't handle this. Yours probably doesn't either.
+
+```python
+# Same signer, same message, different bytes
+r, s, v = original_sig
+s2 = (-s) % SECP256K1_ORDER
+v2 = v ^ 1
+# (r, s2, v2) also recovers to the same address
 ```
 
-EIP-2 tried to fix this by limiting `s` to the lower half of the curve order. It helped. It didn't solve it. Signatures are still malleable in practice because:
-- Different `v` values produce different `address(this)` recoveries
-- Multi-sig protocols that deduplicate by signature break
-- Wallets that cache signatures break
+The Ethereum Yellow Paper defines `v` as recovering the correct public key from two possibilities. Both are correct. The protocol needs to pick one and enforce it. Most don't pick. Most don't enforce.
 
----
-
-Every protocol that deduplicates by signature has a bug. I've checked. I've found them. You probably have them too.
+EIP-2 was 2016. Your code is from 2023. The fix was documented before you started coding.

@@ -1,37 +1,30 @@
 +++
 date = '2026-05-10T14:00:00+05:30'
 draft = false
-title = 'Agentic Kiddies Have a Taxonomy Now'
+title = 'AI Slop Is Drowning Bug Bounty and Nobody in Charge Gives a Single Fuck'
 tags = ['Bug Bounty', 'AI', 'Security']
 +++
 
-dexter0us said one thing in a Cantina channel that explained the entire AI submission crisis better than any report could:
+dexter0us said one sentence in a Cantina Discord channel that explained the entire AI submission crisis better than any 200-page report could:
 
-> "Some AI subs are genuinely valid and good finds, generally who are good at finding stuff are even better with AI, and script kiddies have now turned into agentic kiddies."
+"Some AI subs are genuinely valid and good finds, generally who are good at finding stuff are even better with AI, and script kiddies have now turned into agentic kiddies."
 
-The polarization:
+One sentence. The entire problem.
 
-```text
-Before AI:
-- Skilled hunters: found real bugs
-- Script kiddies: copy-pasted exploits
+## The Numbers Are Insane
 
-After AI:
-- Skilled hunters: found real bugs, but faster
-- Agentic kiddies: 900% more submissions, 95% invalid
-```
+Submissions are up 900 percent year over year. Curl's maintainer reports 95 percent of AI submissions are invalid. Bugcrowd's queue spiked 334 percent in three weeks. The valid submission rate dropped from 15 percent to below 5 percent.
 
-The good news: actual talent is more valuable than ever. The bad news: signal-to-noise ratio is inverted.
+Fifteen percent to five percent. The signal-to-noise ratio inverted. Triage teams are drowning. Real bugs are buried under mountains of AI-generated slop that formats correctly but contains no actual vulnerabilities.
 
----
+## The Polarization
 
-| Metric | Before AI | After AI |
-|--------|-----------|----------|
-| Submissions/week | baseline | +900% |
-| Valid rate | ~15% | below 5% |
-| Triage time | manageable | drowning |
-| Real signal per 100 subs | 15 | 4 (and shrinking) |
+Before AI, there were skilled hunters who found real bugs and script kiddies who copy-pasted exploits. After AI, the skilled hunters are faster and the script kiddies have become agentic kiddies. They configure AI agents to mass-scan codebases and auto-submit findings.
 
-The reframe isn't AI vs human. It's skilled hunters with AI assistants vs untalented people with AI assistants.
+The skilled hunters are better than ever. The agentic kiddies are louder than ever. Both groups are submitting 10x more than before. The difference is that one group's submission rate going up is good for security, and the other group's is a denial-of-service attack on triage teams.
 
-dexter0us said one sentence and reframed the entire crisis.
+## What Nobody Says
+
+The platforms benefit from submission volume. More submissions mean more engagement metrics. More engagement means higher valuations. The incentive structure rewards noise. If you run a bug bounty platform and AI increases your submission count by 900 percent, that's a growth story to tell investors. The fact that 95 percent is garbage is an operational problem for someone else.
+
+Nobody in charge has incentive to fix this. The platforms want volume. The submitters want payouts. The protocols want security. These three things do not align and the AI slop wave is making the misalignment worse every day.

@@ -1,26 +1,31 @@
 +++
 date = '2024-07-05T14:00:00+05:30'
 draft = false
-title = 'Ecrecover Returns Zero and Nobody Cares'
+title = 'Ecrecover Returns address(0) When It Fails and You Never Checked'
 tags = ['EVM', 'Solidity', 'Cryptography']
 +++
 
-`ecrecover` returns `address(0)` when the signature is invalid. It doesn't revert. It doesn't warn you. It just silently hands you the zero address.
-
 ```solidity
-// This returns address(0) if the signature is garbage.
-// The require below passes if ecrecover returns zero
-// AND the expected signer is the zero address.
-// Which never happens.
-// So this pattern "works" by accident.
 address signer = ecrecover(hash, v, r, s);
 require(signer == expectedSigner, "bad sig");
 ```
 
-Every implementation that wraps this with a custom check is reinventing OpenZeppelin's `ECDSA.recover`. Every implementation that doesn't is vulnerable.
+This is in your codebase. It works. It always works. Until it doesn't.
 
-I've seen both in production. I've written both myself.
+`ecrecover` returns `address(0)` when the signature is garbage. It doesn't revert. It doesn't warn you. It doesn't even return `address(0xdead)` so you'd notice. It returns zero. And your `require(signer == expectedSigner)` passes if `expectedSigner` somehow equals the zero address, which it never does, so the check works by accident.
 
----
+## The Accidental Safety
 
-The precompile that lies to you. Eight years. Still lying.
+The pattern "works" because nobody deploys contracts with `expectedSigner` set to `address(0)`. If they did, your require statement would be useless and any garbage signature would pass. The safety is purely coincidental. You are protected by convention, not by code.
+
+## What You Should Be Writing
+
+```solidity
+address signer = ecrecover(hash, v, r, s);
+require(signer != address(0), "ecrecover failed");
+require(signer == expectedSigner, "bad sig");
+```
+
+Or just use OpenZeppelin's `ECDSA.recover` which handles this internally and has since 2017.
+
+I have seen production code that doesn't check. I have written production code that doesn't check. The precompile is eight years old and it still lies to you. Eight years. Still lying. Fix your requires.

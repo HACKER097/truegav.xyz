@@ -1,29 +1,26 @@
 +++
 date = '2026-04-20T14:00:00+05:30'
 draft = false
-title = 'Prediction Markets Are Not Magic, Theyre Arbitrage on Reality'
-tags = ['Economics', 'Prediction Markets', 'Information Theory']
+title = 'Prediction Markets Are Not Magic and I Can Prove It With a Fucking Horse'
+tags = ['Economics', 'Prediction Markets']
 +++
 
-Imagine there's a piece of paper in a drawer with a word written on it. Nobody knows what the word is. A prediction market on "what word is in the drawer" sits at 50/50 for every possible answer.
+There's a piece of paper in a drawer with a word written on it. Nobody knows the word. A prediction market on "what word is in the drawer" sits at 50/50 for every possible answer.
 
-Someone can spend $100 to break into the house, read the paper, and trade on the information. If the market is big enough, they profit. If it's not, they don't.
+Someone can spend $100 to break into the house, read the paper, and trade on the information. If the market is large enough to make that $100 investment profitable, they do it. If the market is too small, nobody bothers. The market stays wrong indefinitely.
 
-That's the information cost ceiling. A prediction market can only incentivize information gathering up to the value of the potential profit. If discovering the truth costs more than you'd make trading on it, the market settles at an uninformative equilibrium.
+That's the information cost ceiling. A prediction market can only surface information that is cheaper to discover than the profit from trading on it. If discovering the truth costs more than the possible gain, the market settles at an uninformative equilibrium based entirely on public information.
 
-```text
-Market volume: $X
-Discovery cost: $Y
-If Y > X: the market stays wrong
-If Y < X: someone discovers the truth
-```
+## Polymarket Doesn't Know the Future
 
-Polymarket knows this. Every prediction market knows this. They just don't advertise it.
+Every Polymarket contract showing a probability is just the aggregation of public information. It says nothing about the true probability. If the true answer requires information that nobody has incentive to discover, the market will be wrong and nobody will correct it because correcting it costs more than the profit.
 
----
+Market volume is a hard ceiling on accuracy. A market at $10,000 total volume cannot justify spending $100,001 to discover the truth. It can only justify spending up to $10,000. If the truth costs $10,001, the market stays wrong.
 
-A prediction market showing 22% chance of an event doesn't mean the TRUE probability is 22%. It means the aggregation of PUBLIC information yields 22%. The real probability could be 1% or 99% if you had perfect information.
+## The Horse Donkey Thing
 
-Prediction markets are not magic. They're arbitrage on reality, bounded by the cost of discovering what reality is.
+The original thought experiment is about betting on whether an animal is a horse or donkey when the only way to tell is to check the genitals. If the market is small, nobody bothers checking. The market stays at 50/50. If the market is huge, someone checks and the market collapses to 99/1.
 
-The horse/donkey thought experiment applies everywhere. I'm not telling you what it is. Google it.
+Launch a satellite to track oil tank levels? Profitable if the oil market is big enough. Hack a private server to get confidential data? Same logic. Kidnap someone to get information? Also same logic. The market doesn't care about ethics. It cares about profit. If profit justifies the crime, the crime happens.
+
+Prediction markets are not magical truth-finding machines. They're arbitrage on reality, bounded by the cost of discovering what reality actually is. The horse knows the answer. The market doesn't until someone pays to check.
