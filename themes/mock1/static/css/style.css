@@ -1351,8 +1351,9 @@ html {
 
   /* home hero */
   .home-hero {
-    padding: 120px 0 80px;
+    padding: 100px 0 60px;
     min-height: auto;
+    overflow: hidden;
   }
 
   .hero-name-solid {
@@ -1360,7 +1361,8 @@ html {
   }
 
   .hero-name-echo {
-    display: none;
+    font-size: clamp(36px, 12vw, 72px);
+    -webkit-text-stroke: 1px var(--lime);
   }
 
   .hero-geo svg {
@@ -1430,6 +1432,12 @@ html {
     min-height: auto;
     padding-top: 90px;
     padding-bottom: 48px;
+    overflow: hidden;
+  }
+
+  .article-hero-inner {
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   .article-geo-bg {
@@ -1444,11 +1452,17 @@ html {
   .article-title {
     font-size: clamp(36px, 11vw, 72px);
     margin-left: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
   }
 
   .article-title.long-title {
     font-size: clamp(28px, 8vw, 52px);
     margin-left: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
   }
 
   .article-meta-bottom {
