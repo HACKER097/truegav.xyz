@@ -33,7 +33,7 @@ I have shipped. I have competed. I have won. I have contributions merged into pr
 
 I am 20. I have 40 more years of career ahead of me. Every year I get better. Every year the gap between me and everyone else grows.
 
-I read Monero's source code for fun. I mapped Aztec's entire seven-key architecture from the whitepaper. I wrote a CTF challenge that 1,299 teams solved and scored 4.23 out of 5. I found reentrancy bugs in audited contracts and ECDSA malleability in production protocols. I did this before I turned 21.
+I read Monero's source code for fun. I mapped Aztec's entire seven-key architecture from the whitepaper. I shipped a CLI tool with 32,000 downloads that people use instead of the official explorer. I found reentrancy bugs in audited contracts and ECDSA malleability in production protocols. I did this before I turned 21.
 
 The people competing with me are older, slower, and comfortable. They have mortgages and families and 9-to-5 jobs that pay well enough to stop trying. I have none of that. I have time and I have hunger and I have the receipts.
 
