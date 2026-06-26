@@ -34,7 +34,7 @@ Stack Overflow explains it. OpenZeppelin comments warn about it. Solidity docs m
 
 There is no EVM opcode for "is this address under construction." Proposals exist. The core devs have decided it's not important. The prank is a permanent feature of the protocol now.
 
-## What To Do
+## What to Do
 
 Nothing. There's no fix. You cannot reliably tell if an address is a contract at the EVM level. Accept that contracts under construction are contracts. Design accordingly.
 

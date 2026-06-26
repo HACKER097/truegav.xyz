@@ -21,7 +21,7 @@ Extreme pantropy: consciousness transfer into a body purpose-built for the envir
 
 Forced pantropy: you don't get a choice. Someone decides you need to be modified to survive and they do it to you. The line between pioneer and victim is a funding decision.
 
-## The Stories That Get It
+## The Stories that Get It
 
 Clifford Simak's "Desertion" from 1944 is the pantropy ur-text. Humans are converted into Jovian lifeforms to explore Jupiter's surface. None of them come back. Not because they can't. Because the alien body is superior to the human one and they don't want to return. They've been improved against their will and they're happier for it.
 

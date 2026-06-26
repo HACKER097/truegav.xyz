@@ -1,5 +1,5 @@
 +++
-date = '2023-03-22T14:00:00+05:30'
+date = '2024-03-22T14:00:00+05:30'
 draft = false
 title = "Aztec Has Seven Keys and a Proving System Called Honk and I Fucking Love It"
 tags = ['Aztec', 'Privacy', 'ZK', 'Monero']

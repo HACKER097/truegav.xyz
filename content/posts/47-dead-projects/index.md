@@ -34,7 +34,7 @@ It ran `echo hello` beautifully. Everything else segfaulted. I spent 2 weeks deb
 
 Uniswap clones. Every single one. Different color schemes. One had a DAO. The DAO had two members: me and my alt account.
 
-## The Note Taking App That Still Works
+## The Note Taking App that Still Works
 
 ```bash
 echo "$(date): $@" >> notes.txt
@@ -52,7 +52,7 @@ drawTriangle(0, 0, 1, 0, 0, 1);
 
 The triangle was beautiful. I never made a game.
 
-## The One That Shipped
+## The One that Shipped
 
 ```python
 #!/usr/bin/env python3

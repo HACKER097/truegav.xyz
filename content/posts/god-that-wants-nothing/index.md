@@ -1,5 +1,5 @@
 +++
-date = '2026-03-08T14:00:00+05:30'
+date = '2026-05-12T14:00:00+05:30'
 draft = false
 title = 'A God That Wants Nothing Is the Most Terrifying Thing I Can Imagine'
 tags = ['Philosophy', 'Exurb1a', 'Fun Theory']
@@ -11,7 +11,7 @@ The ocean imitates everything perfectly because it has no internal state to inte
 
 The narrator tries to communicate. Nothing. Tries to build a civilization. It collapses. Tries to escape. Can't. The ocean doesn't stop him. It doesn't help him either. It's not malevolent. It's not benevolent. It's not even indifferent. It's just not there in the way you need it to be.
 
-## Fun Theory Says Something About This
+## Fun Theory Says Something about This
 
 Eliezer Yudkowsky's Fun Theory from 2008 asks what makes a life worth living. The answer involves high challenge, complex novelty, and interpersonal entanglement. You need problems you can't solve immediately. You need things to discover. You need other minds to care about.
 
