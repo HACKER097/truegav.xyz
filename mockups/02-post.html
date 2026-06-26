@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup 02 — The Reading Room (Single Post)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   MOCKUP 02 — THE READING ROOM
+   Single post. Content as architecture. 
+   ============================================================ */
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --void:#161a1e;
+  --concrete:#1c2128;
+  --concrete-hi:#222930;
+  --chalk:#e0e4dc;
+  --dust:#8a9490;
+  --dust-dim:#4a5450;
+  --rebar:#2a323c;
+  --rebar-hi:#363f4a;
+
+  --amber:#f6dbab;
+  --teal:#9cf0e2;
+  --blue:#add7f4;
+  --green:#a2ebbf;
+  --red:#ef9ea5;
+  --purple:#c5aef3;
+  --coral:#efa8ba;
+  --orange:#f4c5a3;
+  --cyan:#9fe1ee;
+
+  --display:'Orbitron','Bank Gothic','Squarish Sans CT',sans-serif;
+  --mono:'JetBrains Mono','Courier New',monospace;
+
+  --s1:0.25rem;--s2:0.5rem;--s3:0.75rem;--s4:1rem;
+  --s6:1.5rem;--s8:2rem;--s12:3rem;--s16:4rem;--s24:6rem;
+  --max:50rem;
+}
+
+@property --grain{
+  syntax:'<number>';
+  initial-value:0.035;
+  inherits:true;
+}
+
+html{font-size:16px;scroll-behavior:smooth;background:var(--void)}
+
+body{
+  font-family:var(--mono);
+  color:var(--chalk);
+  line-height:1.8;
+  max-width:var(--max);
+  margin:0 auto;
+  padding:var(--s8) var(--s8) var(--s12);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:var(--void);
+}
+
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:9999;pointer-events:none;
+  opacity:var(--grain);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   MINI HEADER — compact navigation for reading mode
+   ============================================================ */
+
+.read-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:var(--s6);
+  padding-bottom:var(--s4);
+  position:relative;
+}
+
+.read-head::after{
+  content:'';
+  position:absolute;bottom:0;left:0;right:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent 0%,var(--rebar) 30%,var(--rebar) 70%,transparent 100%);
+}
+
+.read-logo{
+  font-family:var(--display);
+  font-size:0.85rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  color:var(--dust-dim);
+  text-decoration:none;
+  transition:color 0.12s;
+}
+.read-logo:hover{color:var(--green)}
+
+.read-back{
+  font-family:var(--mono);
+  font-size:0.75rem;
+  color:var(--dust);
+  text-decoration:none;
+  transition:color 0.12s;
+}
+.read-back:hover{color:var(--teal)}
+.read-back::before{content:'← '}
+
+/* ============================================================
+   POST HEADER — the monumental title block
+   ============================================================ */
+
+.post-head{
+  margin-bottom:var(--s12);
+}
+
+.post-head h1{
+  font-family:var(--display);
+  font-size:clamp(2rem,5.5vw,3.5rem);
+  font-weight:900;
+  line-height:1.05;
+  letter-spacing:-0.02em;
+  color:var(--chalk);
+  margin-bottom:var(--s4);
+}
+
+/* ---- metadata strip ---- */
+.post-meta-strip{
+  display:flex;
+  align-items:center;
+  gap:var(--s3);
+  flex-wrap:wrap;
+  margin-bottom:var(--s8);
+}
+
+.post-meta-strip time{
+  font-family:var(--mono);
+  font-size:0.82rem;
+  color:var(--blue);
+  font-variant-numeric:tabular-nums;
+  font-weight:700;
+}
+
+.meta-sep{
+  color:var(--dust-dim);
+  font-size:0.5rem;
+  user-select:none;
+}
+
+.post-meta-strip .reading-time{
+  font-size:0.78rem;
+  color:var(--dust-dim);
+}
+
+.post-meta-strip .tags-inline{
+  display:flex;gap:var(--s4);flex-wrap:wrap;
+}
+.post-meta-strip .tags-inline a{
+  font-size:0.72rem;
+  color:var(--dust);
+  text-decoration:none;
+  transition:color 0.12s;
+}
+.post-meta-strip .tags-inline a:hover{color:var(--coral)}
+.post-meta-strip .tags-inline a::before{content:'#'}
+
+/* ---- heavy divider before content ---- */
+.post-head-divider{
+  height:3px;
+  margin-bottom:0;
+  background:
+    linear-gradient(90deg,var(--rebar-hi) 0%,var(--rebar) 50%,var(--rebar-hi) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23d)'/%3E%3C/svg%3E");
+  opacity:0.5;
+}
+
+/* ============================================================
+   CONTENT — the reading experience
+   ============================================================ */
+
+.content{
+  margin-top:var(--s8);
+}
+
+.content p{
+  margin-bottom:var(--s5);
+  font-size:1rem;
+  line-height:1.8;
+}
+
+.content h2{
+  font-family:var(--display);
+  font-size:0.88rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  color:var(--green);
+  margin:var(--s12) 0 var(--s4);
+  position:relative;
+  padding-left:var(--s4);
+}
+
+.content h2::before{
+  content:'';
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:3px;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      var(--green) 0px,
+      transparent 1px,
+      transparent 3px,
+      var(--green) 3px,
+      transparent 4px
+    );
+}
+
+.content h3{
+  font-family:var(--display);
+  font-size:0.95rem;
+  font-weight:700;
+  color:var(--blue);
+  margin:var(--s8) 0 var(--s3);
+}
+
+.content strong{color:var(--chalk);font-weight:700}
+.content em{color:var(--dust);font-style:italic}
+
+.content a{
+  color:var(--chalk);
+  text-decoration:none;
+  border-bottom:1px solid var(--rebar-hi);
+  transition:border-color 0.12s,color 0.12s;
+}
+.content a:hover{
+  border-bottom-color:var(--cyan);
+  color:var(--cyan);
+}
+
+.content ul,.content ol{
+  margin:0 0 var(--s5) var(--s6);
+}
+.content li{
+  margin-bottom:var(--s2);
+}
+.content li::marker{color:var(--dust-dim)}
+
+/* ---- blockquote: dithered coral border ---- */
+.content blockquote{
+  border-left:4px solid;
+  border-image:repeating-linear-gradient(
+    0deg,
+    var(--coral) 0px,
+    transparent 1px,
+    transparent 3px,
+    var(--coral) 3px,
+    transparent 4px
+  ) 1;
+  padding:var(--s2) 0 var(--s2) var(--s5);
+  margin:var(--s6) 0;
+  color:var(--dust);
+  font-style:italic;
+  background:var(--concrete);
+}
+
+/* ---- code: noise-textured surface ---- */
+.content pre{
+  background:var(--concrete);
+  border:1px solid var(--rebar);
+  border-radius:0;
+  padding:var(--s5) var(--s5);
+  overflow-x:auto;
+  font-size:0.84rem;
+  line-height:1.65;
+  margin:var(--s6) 0;
+  position:relative;
+}
+
+.content pre::before{
+  content:'';
+  position:absolute;inset:0;
+  pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E");
+  opacity:0.08;
+}
+
+.content code{
+  font-family:var(--mono);
+  font-size:0.84rem;
+}
+
+.content p code,
+.content li code{
+  background:var(--concrete);
+  color:var(--amber);
+  padding:0.15em 0.45em;
+  border:1px solid var(--rebar);
+  font-size:0.84em;
+  border-radius:0;
+}
+
+/* ---- tables ---- */
+.content hr{
+  border:none;
+  height:2px;
+  margin:var(--s8) 0;
+  background:linear-gradient(90deg,transparent 0%,var(--rebar) 50%,transparent 100%);
+}
+
+.content table{
+  width:100%;
+  border-collapse:collapse;
+  margin:var(--s6) 0;
+  font-size:0.88rem;
+}
+.content th,.content td{
+  text-align:left;
+  padding:var(--s2) var(--s3);
+  border-bottom:1px solid var(--rebar);
+}
+.content th{
+  font-family:var(--display);
+  font-size:0.72rem;
+  font-weight:700;
+  color:var(--green);
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+}
+
+.content img{
+  max-width:100%;
+  border:1px solid var(--rebar);
+  margin:var(--s6) 0;
+  display:block;
+}
+
+/* ---- code block language label ---- */
+.code-block{
+  position:relative;
+  margin:var(--s6) 0;
+}
+.code-lang{
+  position:absolute;
+  top:0;right:0;
+  font-family:var(--display);
+  font-size:0.6rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  color:var(--dust-dim);
+  padding:var(--s2) var(--s3);
+  pointer-events:none;
+}
+
+/* ============================================================
+   POST NAVIGATION — structural footers
+   ============================================================ */
+
+.post-floor{
+  margin-top:var(--s16);
+  padding-top:var(--s8);
+  position:relative;
+}
+
+.post-floor::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;
+  height:3px;
+  background:
+    linear-gradient(90deg,var(--rebar-hi) 0%,var(--rebar) 50%,var(--rebar-hi) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  opacity:0.5;
+}
+
+.post-nav{
+  display:flex;
+  justify-content:space-between;
+  gap:var(--s6);
+}
+
+.post-nav a{
+  display:flex;
+  flex-direction:column;
+  gap:var(--s1);
+  text-decoration:none;
+  max-width:45%;
+}
+.post-nav a:last-child{text-align:right;margin-left:auto}
+
+.nav-arrow{
+  font-family:var(--display);
+  font-size:0.65rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.12em;
+  color:var(--dust-dim);
+  transition:color 0.12s;
+}
+
+.nav-title{
+  font-family:var(--mono);
+  font-size:0.88rem;
+  color:var(--dust);
+  transition:color 0.12s;
+  line-height:1.4;
+}
+
+.post-nav a:hover .nav-arrow{color:var(--teal)}
+.post-nav a:hover .nav-title{color:var(--chalk)}
+
+/* ---- site footer ---- */
+.site-foot{
+  margin-top:var(--s12);
+  padding-top:var(--s6);
+  display:flex;
+  justify-content:space-between;
+  font-size:0.68rem;
+  color:var(--dust-dim);
+  letter-spacing:0.03em;
+}
+.site-foot kbd{
+  font-family:var(--mono);
+  font-size:0.62rem;
+  color:var(--teal);
+  border:1px solid var(--rebar-hi);
+  padding:0 4px;
+  border-radius:1px;
+}
+
+::selection{background:rgba(156,240,226,0.2);color:var(--chalk)}
+
+@media(max-width:640px){
+  body{padding:var(--s6) var(--s4) var(--s8)}
+  .post-head h1{font-size:1.8rem}
+  .post-nav{flex-direction:column;gap:var(--s4)}
+  .post-nav a{max-width:100%}
+  .post-nav a:last-child{text-align:left}
+}
+</style>
+</head>
+<body>
+
+<header class="read-head">
+  <a href="/" class="read-logo">TRUEGAV</a>
+  <a href="/" class="read-back">back to posts</a>
+</header>
+
+<main>
+  <article>
+    <div class="post-head">
+      <h1>Why Flat, Sharp, and Bold: A Design Language for the Web</h1>
+      <div class="post-meta-strip">
+        <time datetime="2026-04-02">2026-04-02</time>
+        <span class="meta-sep">&middot;</span>
+        <span class="reading-time">8 min read</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="tags-inline">
+          <a href="/tags/design/">design</a>
+          <a href="/tags/web/">web</a>
+        </span>
+      </div>
+      <div class="post-head-divider"></div>
+    </div>
+
+    <div class="content">
+      
+      <p>There is a particular aesthetic that runs through Bungie's <strong>Marathon</strong> trilogy — a visual language born from the hard constraints of a 2.5D engine, yet so distinct that it defines the game's identity more than any plot point or mechanic. Flat textures. Sharp geometry. Bold color choices. Everything feels architectural, intentional, <em>constructed</em>.</p>
+
+      <p>This aesthetic isn't just a retro curiosity. It's a complete design philosophy that maps cleanly onto the web — onto typography, layout systems, color theory, and interaction design. And it's been hiding in plain sight.</p>
+
+      <h2>The Three Forces</h2>
+
+      <p>The Marathon aesthetic is defined by three forces held in tension. <strong>Flatness</strong> — surfaces that read as planes, not as simulations of material. No gradients, no soft shadows, no glossy effects. Every surface is a decision, not a render. <strong>Sharpness</strong> — the enforced orthogonal geometry of a 2.5D engine created a world of 90-degree angles, of architectural precision. No organic curves, no smooth transitions. Everything is crisp, deliberate, structural. <strong>Boldness</strong> — limited color palettes used with maximum impact. When you only have a few colors, every one of them has to carry weight.</p>
+
+      <p>Together, these forces produce something that feels more like <em>architecture</em> than like graphics. You're not looking at pictures — you're moving through a constructed space where every element justifies its presence.</p>
+
+      <blockquote>
+        <p>The constraint forces intentionality. When you can't do realistic curves, you make geometry meaningful. When you can't do smooth gradients, you make every color choice deliberate. The result is a world that feels <em>designed</em> rather than simulated.</p>
+      </blockquote>
+
+      <h2>From Game Engine to CSS</h2>
+
+      <p>Translating this into web design means understanding what each force demands:</p>
+
+      <ul>
+        <li><strong>Flat:</strong> Solid color backgrounds. No box-shadow blur. No gradients except where they serve a specific structural purpose. Border-radius at zero or near-zero.</li>
+        <li><strong>Sharp:</strong> 1–2px solid borders as the primary visual separator. Geometric layouts. Hard grid lines. Structural clarity over decoration.</li>
+        <li><strong>Bold:</strong> 2–3 accent colors on a neutral base. High contrast between surface levels. Typography that asserts itself — not timid, not apologetic.</li>
+      </ul>
+
+      <p>But there's a fourth element that most discussions miss: <strong>texture</strong>. Marathon's surfaces weren't just flat colors — they were flat colors with the faint grain of a texture map, the subtle noise of a low-color-depth display, the materiality of concrete and metal. This is where dithering and noise enter the web design vocabulary.</p>
+
+      <h3>The Noise Layer</h3>
+
+      <p>Using SVG <code>feTurbulence</code> filters, we can add a barely-visible grain overlay to any surface — concrete texture on backgrounds, paper grain on content areas, CRT-like static on interactive elements. The noise is never the point. It's the <em>feeling</em> of material. At 3–5% opacity, you don't see it consciously — but its absence would leave the design feeling sterile, weightless, fake.</p>
+
+      <p>Here's what a noise-filtered code block looks like:</p>
+
+      <div class="code-block">
+        <span class="code-lang">CSS</span>
+        <pre><code>/* SVG feTurbulence as a background texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("noise.svg");
+  mix-blend-mode: overlay;
+}</code></pre>
+      </div>
+
+      <p>The technique is remarkably lightweight — a single SVG file, no JavaScript, zero HTTP requests when inlined as a data URI. The entire texture system adds maybe 300 bytes to the stylesheet.</p>
+
+      <h2>The Typography of Architecture</h2>
+
+      <p>Marathon's type choices were architectural before "architectural typography" was a trend. <strong>Bank Gothic</strong> — a geometric sans-serif with square proportions, designed in the 1930s — was used for the game's manual and UI elements. It's a font that looks like it was built from steel beams. <strong>Modula Tall</strong>, used for title displays, is tall and condensed — vertical, imposing, like a skyscraper in letterform.</p>
+
+      <p>For the web, the open-source <strong>Squarish Sans CT</strong> carries the Bank Gothic lineage under a free license. Paired with a monospace body font (JetBrains Mono), you get the full spectrum: architectural headers that feel carved into the wall, and precise body text that feels like printed matter.</p>
+
+      <h2>Where This Goes</h2>
+
+      <p>The flat/sharp/bold aesthetic isn't a "retro" style — it's a <em>materially honest</em> one. It rejects the fake depth of drop shadows, the artificial smoothness of heavy border-radius, the muddy midtones of "modern" palette generators. In their place, it offers something rarer: a design that you can feel.</p>
+
+    </div>
+  </article>
+
+  <div class="post-floor">
+    <nav class="post-nav">
+      <a href="/posts/dithering-experiments/">
+        <span class="nav-arrow">← prev</span>
+        <span class="nav-title">Experiments with Bayer Dithering and Noise Textures in CSS</span>
+      </a>
+      <a href="/posts/web2-triager/">
+        <span class="nav-arrow">next →</span>
+        <span class="nav-title">AI Bug Bounty Triage — Automating the Noise Away</span>
+      </a>
+    </nav>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <span>&copy; 2026 truegav</span>
+  <span><kbd>j</kbd>/<kbd>k</kbd> navigate &nbsp; <kbd>/</kbd> search</span>
+</footer>
+
+</body>
+</html>

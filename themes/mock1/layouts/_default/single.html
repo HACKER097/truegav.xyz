@@ -1,0 +1,175 @@
+{{- define "main" }}
+{{- $allPages := .Site.RegularPages }}
+{{- $total := len $allPages }}
+{{- .Scratch.Set "postIndex" $total }}
+{{- range $i, $p := $allPages }}
+  {{- if eq $p.RelPermalink $.RelPermalink }}
+    {{- $.Scratch.Set "postIndex" (sub $total $i) }}
+  {{- end }}
+{{- end }}
+{{- $postNum := .Scratch.Get "postIndex" }}
+
+<section class="article-hero">
+  <div class="article-geo-bg" id="article-geo-bg-wrap">
+    <svg id="art-hero-geo" viewBox="0 0 800 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g id="art-geo-lime" stroke="#c8ff00" stroke-width="0.3" fill="none" opacity="0.5"></g>
+      <g id="art-geo-dim"  stroke="#ede9e0" stroke-width="0.2" fill="none" opacity="0.06"></g>
+      <g id="art-geo-particles" fill="#c8ff00"></g>
+    </svg>
+  </div>
+
+  <div class="article-hero-inner" style="position:relative">
+    <div class="article-meta-top">
+      <a href="{{ .Site.Home.RelPermalink }}">← home</a>
+      <span class="sep">·</span>
+      {{- range .Params.tags }}
+      <span>{{ . }}</span>
+      <span class="sep">·</span>
+      {{- end }}
+      <span>post #{{ printf "%03d" $postNum }}</span>
+    </div>
+
+    <h1 class="article-title">{{ .Title }}</h1>
+
+    {{- with .Description }}
+    <p class="article-subtitle">{{ . }}</p>
+    {{- else }}
+    <p class="article-subtitle">{{ .Summary | plainify | truncate 200 }}</p>
+    {{- end }}
+
+    <div class="article-meta-bottom">
+      <div class="meta-item">
+        <span class="meta-label">published</span>
+        <span class="meta-value">{{ .Date.Format "January 02, 2006" }}</span>
+      </div>
+      {{- if ne .Lastmod .Date }}
+      <div class="meta-item">
+        <span class="meta-label">last updated</span>
+        <span class="meta-value">{{ .Lastmod.Format "January 02, 2006" }}</span>
+      </div>
+      {{- end }}
+      <div class="meta-item">
+        <span class="meta-label">reading time</span>
+        <span class="meta-value">{{ .ReadingTime }} min</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">word count</span>
+        <span class="meta-value">~{{ .WordCount }}</span>
+      </div>
+      <div class="meta-item" style="margin-left:auto;">
+        <span class="meta-label">post</span>
+        <span class="meta-value" style="font-size:36px;font-weight:100;color:var(--faint);letter-spacing:-0.04em;">{{ printf "%03d" $postNum }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="article-layout">
+  <aside class="article-toc">
+    <div class="toc-label">// contents</div>
+    {{- $toc := .TableOfContents }}
+    {{- $toc = replaceRE `<nav[^>]*>` "" $toc }}
+    {{- $toc = replaceRE `</nav>` "" $toc }}
+    {{- $toc = replace $toc "<ul>" "<ul class=\"toc-list\" id=\"toc\">" 1 }}
+    {{- $toc | safeHTML }}
+    <div style="margin-top:48px;">
+      <div class="toc-label">// progress</div>
+      <div style="height:120px;width:2px;background:var(--border);position:relative;margin-left:8px;margin-top:16px;">
+        <div id="toc-progress-bar" style="position:absolute;top:0;left:0;width:100%;background:var(--lime);height:0%;transition:height 0.1s;"></div>
+      </div>
+    </div>
+  </aside>
+
+  <article class="article-content" id="article-body">
+    {{- .Content }}
+
+    <div class="article-end">
+      <div class="article-end-num">{{ printf "%03d" $postNum }}</div>
+      <div class="article-end-text">
+        <strong>end of post</strong>
+        {{- with .Site.Params.author }} by {{ . }}{{ end }}
+      </div>
+    </div>
+  </article>
+
+  <aside class="article-sidebar">
+    {{- with .Params.tags }}
+    <div class="sidebar-section">
+      <div class="sidebar-label">tags</div>
+      <div class="sidebar-tags">
+        {{- range . }}<a href="{{ "/tags/" | relURL }}{{ . | urlize }}/" class="tag">{{ . }}</a>{{ end }}
+      </div>
+    </div>
+    {{- end }}
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">stats</div>
+      <div class="sidebar-stat">
+        <span class="s-label">words</span>
+        <span class="s-val">{{ .WordCount }}</span>
+      </div>
+      <div class="sidebar-stat">
+        <span class="s-label">minutes</span>
+        <span class="s-val">{{ .ReadingTime }}</span>
+      </div>
+      <div class="sidebar-stat">
+        <span class="s-label">post no.</span>
+        <span class="s-val">{{ printf "%03d" $postNum }}</span>
+      </div>
+      <div class="sidebar-stat">
+        <span class="s-label">year</span>
+        <span class="s-val">{{ .Date.Format "2006" }}</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">share</div>
+      <div class="share-links">
+        <a href="#" class="share-link" onclick="navigator.clipboard.writeText(window.location.href);return false;">copy link</a>
+        <a href="https://twitter.com/intent/tweet?url={{ .Permalink }}&text={{ .Title }}" class="share-link" target="_blank" rel="noopener">twitter/x</a>
+        <a href="https://mastodon.social/share?text={{ .Title }}%20{{ .Permalink }}" class="share-link" target="_blank" rel="noopener">mastodon</a>
+        <a href="https://news.ycombinator.com/submitlink?u={{ .Permalink }}&t={{ .Title }}" class="share-link" target="_blank" rel="noopener">hackernews</a>
+      </div>
+    </div>
+
+    <div class="sidebar-section" style="border:none">
+      <div class="sidebar-label">geometry</div>
+      <svg id="sidebar-geo" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg"
+           style="width:100%;height:auto;margin-top:8px;">
+        <g id="sb-geo-g" stroke="#c8ff00" stroke-width="0.4" fill="none" opacity="0.5"></g>
+        <g id="sb-geo-d" stroke="#ede9e0" stroke-width="0.25" fill="none" opacity="0.08"></g>
+      </svg>
+    </div>
+  </aside>
+</div>
+
+{{- $related := .Site.RegularPages.Related . | first 3 }}
+{{- if gt (len $related) 0 }}
+<section class="related-section">
+  <div class="section-label">// related posts</div>
+  <div class="related-grid">
+    {{- range $related }}
+    <a href="{{ .RelPermalink }}" class="related-card">
+      <div class="related-date">{{ .Date.Format "Jan 02, 2006" }}</div>
+      <div class="related-title">{{ .Title }}</div>
+    </a>
+    {{- end }}
+  </div>
+</section>
+{{- else }}
+{{- $recent := first 3 (after 0 $allPages | complement (slice .)) }}
+{{- if gt (len $recent) 0 }}
+<section class="related-section">
+  <div class="section-label">// recent posts</div>
+  <div class="related-grid">
+    {{- range $recent }}
+    <a href="{{ .RelPermalink }}" class="related-card">
+      <div class="related-date">{{ .Date.Format "Jan 02, 2006" }}</div>
+      <div class="related-title">{{ .Title }}</div>
+    </a>
+    {{- end }}
+  </div>
+</section>
+{{- end }}
+{{- end }}
+{{- end }}

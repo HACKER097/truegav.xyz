@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Geo Perf Benchmark</title>
+<style>body{background:#090909;color:#ede9e0;font:12px 'JetBrains Mono',monospace;padding:20px}
+table{border-collapse:collapse;width:100%}td,th{padding:6px 12px;text-align:left;border-bottom:1px solid #252525}
+.good{color:#c8ff00}.warn{color:#8baf00}.bad{color:#ff3b30}</style></head><body>
+<h1>Per-shape benchmark</h1><p>Running 500 frames per shape...</p>
+<div id="out"></div>
+<svg id="s" viewBox="0 0 800 700" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:0.3"></svg>
+<script>
+var SVG_NS='http://www.w3.org/2000/svg';
+var FOCAL=500;
+var s=document.getElementById('s');
+
+function project3D(x,y,z,f){var sc=f/(f+z);return{x:x*sc,y:y*sc,scale:sc};}
+function elSVG(t){return document.createElementNS(SVG_NS,t);}
+
+// --- shape generators (copied from main.js) ---
+
+function projectTesseract(time,cx,cy,scl){
+  var th1=time*0.4,th2=time*0.55;
+  var c1=Math.cos(th1),s1=Math.sin(th1),c2=Math.cos(th2),s2=Math.sin(th2);
+  var p3=[],d='';
+  for(var i=0;i<16;i++){
+    var v=[(i&8)?1:-1,(i&4)?1:-1,(i&2)?1:-1,(i&1)?1:-1];
+    var nx=v[0]*c1-v[1]*s1,ny=v[0]*s1+v[1]*c1;
+    var nz=v[2]*c2-v[3]*s2,nw=v[2]*s2+v[3]*c2;
+    var s4=FOCAL/(FOCAL+nw*scl*0.6);
+    var p=project3D(nx*scl*s4,ny*scl*s4,nz*scl*s4+120,FOCAL);
+    p3.push([cx+p.x,cy+p.y]);
+  }
+  for(var e=0;e<32;e++){
+    var ti=e>>1,tj=ti^(1<<(e&3));
+    if(tj>ti&&tj<16){var a=p3[ti],b=p3[tj];
+    d+='M'+a[0].toFixed(1)+','+a[1].toFixed(1)+'L'+b[0].toFixed(1)+','+b[1].toFixed(1);}
+  }
+  return d;
+}
+
+function projectMobius(time,cx,cy){
+  var R=80,w=35,d='';
+  var rx=time*0.3,ry=time*0.45;
+  var cX=Math.cos(rx),sX=Math.sin(rx),cY=Math.cos(ry),sY=Math.sin(ry);
+  for(var oi=0;oi<3;oi++){var off=(oi-1)*w*0.35;
+    for(var i=0;i<=100;i++){var t=(i/100)*Math.PI*2;
+      var x=(R+off*Math.cos(t/2))*Math.cos(t),y=(R+off*Math.cos(t/2))*Math.sin(t),z=off*Math.sin(t/2);
+      var ty=y*cX-z*sX,tz=y*sX+z*cX,tx=x*cY-tz*sY;tz=x*sY+tz*cY;
+      var p=project3D(tx,ty,tz+105,FOCAL);
+      d+=(i===0?'M':'L')+(cx+p.x).toFixed(1)+','+(cy+p.y).toFixed(1);
+    }
+  }
+  for(var ri=0;ri<10;ri++){var t=(ri/10)*Math.PI*2;
+    for(var si=0;si<=12;si++){var s=(si/12-0.5)*w;
+      var x=(R+s*Math.cos(t/2))*Math.cos(t),y=(R+s*Math.cos(t/2))*Math.sin(t),zz=s*Math.sin(t/2);
+      var ty=y*cX-zz*sX,tz=y*sX+zz*cX,tx=x*cY-tz*sY;tz=x*sY+tz*cY;
+      var p=project3D(tx,ty,tz+105,FOCAL);
+      d+=(si===0?'M':'L')+(cx+p.x).toFixed(1)+','+(cy+p.y).toFixed(1);
+    }
+  }
+  return d;
+}
+
+function projectCliffordTorus(time,cx,cy){
+  var R=290,grid=16,d='';
+  var th1=time*0.35,th2=time*0.5;
+  var c1=Math.cos(th1),s1=Math.sin(th1),c2=Math.cos(th2),s2=Math.sin(th2);
+  var pts=[];
+  for(var i=0;i<grid;i++){pts[i]=[];
+    for(var j=0;j<grid;j++){
+      var th=(i/grid)*Math.PI*2,ph=(j/grid)*Math.PI*2;
+      var x=Math.cos(th)*R,y=Math.sin(th)*R,z=Math.cos(ph)*R,w=Math.sin(ph)*R;
+      var nx=x*c1-y*s1,ny=x*s1+y*c1,nz=z*c2-w*s2,nw=z*s2+w*c2;
+      var s4=FOCAL/(FOCAL+nw*0.4);
+      var p=project3D(nx*s4,ny*s4,nz*s4+110,FOCAL);
+      pts[i][j]=[cx+p.x,cy+p.y];
+    }
+  }
+  for(var i=0;i<grid;i++)for(var j=0;j<grid;j++){
+    var nj=(j+1)%grid,ni=(i+1)%grid;
+    d+='M'+pts[i][j][0].toFixed(1)+','+pts[i][j][1].toFixed(1)+'L'+pts[i][nj][0].toFixed(1)+','+pts[i][nj][1].toFixed(1);
+    d+='M'+pts[i][j][0].toFixed(1)+','+pts[i][j][1].toFixed(1)+'L'+pts[ni][j][0].toFixed(1)+','+pts[ni][j][1].toFixed(1);
+  }
+  return d;
+}
+
+// Dodecahedron
+var phi=(1+Math.sqrt(5))/2,iphi=1/phi;
+var dodecVerts=[[-1,-1,-1],[-1,-1,1],[-1,1,-1],[-1,1,1],[1,-1,-1],[1,-1,1],[1,1,-1],[1,1,1],[0,-iphi,-phi],[0,-iphi,phi],[0,iphi,-phi],[0,iphi,phi],[-iphi,-phi,0],[-iphi,phi,0],[iphi,-phi,0],[iphi,phi,0],[-phi,0,-iphi],[-phi,0,iphi],[phi,0,-iphi],[phi,0,iphi]];
+var edgeLen2=4/(phi*phi);
+var dodecEdges=[];
+for(var i=0;i<20;i++)for(var j=i+1;j<20;j++){var dx=dodecVerts[i][0]-dodecVerts[j][0],dy=dodecVerts[i][1]-dodecVerts[j][1],dz=dodecVerts[i][2]-dodecVerts[j][2];if(Math.abs(dx*dx+dy*dy+dz*dz-edgeLen2)<0.01)dodecEdges.push([i,j]);}
+
+function torusKnot(time,cx,cy,R,r,p,q,steps,offX,offY,offZ){
+  var d='',prev=null;
+  var ry=time*0.8,rx=time*0.6;
+  var cRY=Math.cos(ry),sRY=Math.sin(ry),cRX=Math.cos(rx),sRX=Math.sin(rx);
+  for(var ti=0;ti<=steps;ti++){
+    var tt=(ti/steps)*Math.PI*2;
+    var kx=(R+r*Math.cos(q*tt))*Math.cos(p*tt),ky=(R+r*Math.cos(q*tt))*Math.sin(p*tt),kz=r*Math.sin(q*tt);
+    var tx=kx*cRY-kz*sRY,tz=kx*sRY+kz*cRY,ty=ky*cRX-tz*sRX;tz=ky*sRX+tz*cRX;
+    var kp=project3D(tx,ty,tz+offZ,FOCAL);
+    var px=cx+offX+kp.x,py=cy+offY+kp.y;
+    if(prev)d+='M'+prev[0].toFixed(1)+','+prev[1].toFixed(1)+'L'+px.toFixed(1)+','+py.toFixed(1);
+    prev=[px,py];
+  }
+  return d;
+}
+
+function lissajous(cx,cy,rx,ry,a,b,delta,steps,phase){
+  var pts=[];
+  for(var i=0;i<=steps;i++){var t=(i/steps)*Math.PI*2;pts.push([cx+rx*Math.sin(a*t+delta),cy+ry*Math.sin(b*t+phase)]);}
+  return 'M'+pts.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join('L')+'Z';
+}
+
+function modCircle(cx,cy,r,n,k){
+  var pts=[],d='';
+  for(var i=0;i<n;i++){var a=(i/n)*Math.PI*2-Math.PI/2;pts.push([cx+r*Math.cos(a),cy+r*Math.sin(a)]);}
+  for(var i=0;i<n;i++){var j=(i*k)%n;d+='M'+pts[i][0].toFixed(1)+','+pts[i][1].toFixed(1)+'L'+pts[j][0].toFixed(1)+','+pts[j][1].toFixed(1);}
+  return d;
+}
+
+// --- benchmark runner ---
+var tests=[
+  {name:'Tesseract (4D hypercube)',fn:function(t){return projectTesseract(t,400,350,150);}},
+  {name:'Möbius strip',fn:function(t){return projectMobius(t,400,350);}},
+  {name:'Clifford torus (4D)',fn:function(t){return projectCliffordTorus(t,400,350);}},
+  {name:'Torus knot 1 (R=240)',fn:function(t){return torusKnot(t,400,350,240,75,2,3,250,0,0,115);}},
+  {name:'Torus knot 2 (R=150)',fn:function(t){return torusKnot(t,400,350,150,48,3,5,250,30,-30,140);}},
+  {name:'Lissajous curve',fn:function(t){return lissajous(400,350,280,230,3.7,2.3,t,200,0);}},
+  {name:'ModCircle (n=80)',fn:function(t){return modCircle(400,350,280,80,11);}},
+  {name:'Dodecahedron (project)',fn:function(t){
+    var cosY=Math.cos(t*0.9),sinY=Math.sin(t*0.9),cosX=Math.cos(t*1.1),sinX=Math.sin(t*1.1);
+    var d='',pts=[];
+    for(var v=0;v<20;v++){
+      var x=dodecVerts[v][0],y=dodecVerts[v][1],z=dodecVerts[v][2];
+      var tx=x*cosY-z*sinY,tz=x*sinY+z*cosY,ty=y*cosX-tz*sinX;tz=y*sinX+tz*cosX;
+      var sc=100;tz=tz*sc+105;
+      var p=project3D(tx*sc,ty*sc,tz,FOCAL);
+      pts.push([400+p.x,350+p.y]);
+    }
+    for(var e=0;e<dodecEdges.length;e++){var a=pts[dodecEdges[e][0]],b=pts[dodecEdges[e][1]];d+='M'+a[0].toFixed(1)+','+a[1].toFixed(1)+'L'+b[0].toFixed(1)+','+b[1].toFixed(1);}
+    return d;
+  }},
+  {name:'Constellation nodes (18)',fn:function(t){
+    var d='';for(var i=0;i<18;i++){var px=400+Math.cos(t+i*0.8)*180,py=350+Math.sin(t+i*0.8)*130;d+='<circle cx="'+px.toFixed(1)+'" cy="'+py.toFixed(1)+'" r="3"/>';}return d;
+  }},
+  {name:'Web lines (100 lines)',fn:function(t){
+    var d='',pts=[];for(var i=0;i<18;i++)pts.push([400+Math.cos(t+i*0.8)*180,350+Math.sin(t+i*0.8)*130]);
+    for(var i=0;i<100;i++){var a=pts[i%18],b=pts[(i*7)%18];d+='M'+a[0].toFixed(1)+','+a[1].toFixed(1)+'L'+b[0].toFixed(1)+','+b[1].toFixed(1);}
+    return d;
+  }},
+];
+
+var out=document.getElementById('out');
+var FRAMES=500;
+var results=[];
+
+function runTest(idx){
+  if(idx>=tests.length){showResults();return;}
+  var test=tests[idx];
+  var path=elSVG('path');
+  path.setAttribute('stroke','#c8ff00');path.setAttribute('stroke-width','0.5');path.setAttribute('fill','none');
+  s.appendChild(path);
+  
+  var times=[];
+  function frame(f){
+    var start=performance.now();
+    var d=test.fn(f*0.02);
+    path.setAttribute('d',d);
+    var elapsed=performance.now()-start;
+    times.push(elapsed);
+    if(f<FRAMES){requestAnimationFrame(function(){frame(f+1);});}
+    else{
+      s.removeChild(path);
+      times.sort(function(a,b){return a-b;});
+      var p50=times[Math.floor(times.length*0.5)];
+      var p95=times[Math.floor(times.length*0.95)];
+      var avg=times.reduce(function(a,b){return a+b;},0)/times.length;
+      results.push({name:test.name,avg:avg,p50:p50,p95:p95});
+      out.innerHTML+='<p>'+test.name+': avg='+avg.toFixed(2)+'ms  p50='+p50.toFixed(2)+'ms  p95='+p95.toFixed(2)+'ms</p>';
+      setTimeout(function(){runTest(idx+1);},50);
+    }
+  }
+  requestAnimationFrame(function(){frame(0);});
+}
+
+function showResults(){
+  results.sort(function(a,b){return b.avg-a.avg;});
+  var worst=results[0].avg;
+  var html='<h2>Results (sorted by cost)</h2><table><tr><th>Shape</th><th>Avg ms</th><th>P50</th><th>P95</th><th>Rating</th></tr>';
+  results.forEach(function(r){
+    var cls=r.avg>2?'bad':r.avg>1?'warn':'good';
+    var label=r.avg>2?'EXPENSIVE':r.avg>1?'moderate':'cheap';
+    html+='<tr><td>'+r.name+'</td><td>'+r.avg.toFixed(2)+'</td><td>'+r.p50.toFixed(2)+'</td><td>'+r.p95.toFixed(2)+'</td><td class="'+cls+'">'+label+'</td></tr>';
+  });
+  html+='</table><p>Budget: 16ms/frame for 60fps. Total: '+results.reduce(function(a,b){return a+b.avg;},0).toFixed(2)+'ms</p>';
+  out.innerHTML=html;
+}
+
+setTimeout(function(){runTest(0);},200);
+</script></body></html>

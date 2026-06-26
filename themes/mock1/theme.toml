@@ -1,0 +1,7 @@
+name = "mock1"
+description = "Dark geometric hacker blog theme with generative geo art, CRT scanlines, and brutalist typography"
+tags = ["dark", "blog", "monospace", "geometric", "hacker"]
+min_version = "0.120.0"
+
+[author]
+  name = "truegav"

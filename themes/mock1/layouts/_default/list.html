@@ -1,0 +1,39 @@
+{{ define "main" }}
+{{ $allPosts := .Pages }}
+{{ $total := len $allPosts }}
+
+<section class="list-section">
+  <div class="section-label">// {{ .Title | default "posts" }}</div>
+
+  <div class="posts-header" style="border-top:none;padding-top:0;margin-bottom:var(--gap-lg);">
+    <span class="posts-header-label">// posts</span>
+    <span class="posts-header-count">{{ $total }} entries</span>
+  </div>
+
+  <div class="list-grid">
+    {{ range $i, $post := $allPosts }}
+    {{ $postNum := sub $total $i }}
+    <a href="{{ $post.RelPermalink }}" class="post-card">
+      <div class="post-date-col">
+        <div class="post-date-year">{{ $post.Date.Format "2006" }}</div>
+        <div class="post-date-day">{{ $post.Date.Format "02" }}</div>
+        <div class="post-date-mon">{{ $post.Date.Format "Jan" }}</div>
+      </div>
+      <div class="post-body-col">
+        <div class="post-tags">
+        {{ with $post.Params.tags }}
+          {{ range . }}<span class="tag">{{ . }}</span>{{ end }}
+        {{ end }}
+        </div>
+        <h2 class="post-title">{{ $post.Title }}</h2>
+        <p class="post-summary">{{ $post.Summary | plainify | truncate 200 }}</p>
+      </div>
+      <div class="post-stats-col">
+        <span class="read-time">{{ $post.ReadingTime }} min</span>
+        <span class="post-index">{{ printf "%03d" $postNum }}</span>
+      </div>
+    </a>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

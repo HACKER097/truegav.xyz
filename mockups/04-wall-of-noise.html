@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup 04 — The Wall of Noise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,400;1,700&family=Orbitron:wght@700;900&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   MOCKUP 04 — THE WALL OF NOISE
+   Homepage. Posts as scattered flyers on a concrete wall.
+   No grid. No alignment. No mercy.
+   ============================================================ */
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --void:#0f1215;
+  --concrete:#1a1e23;
+  --chalk:#ece8df;
+  --dust:#8a9490;
+  --dust-dim:#4a5450;
+  --rebar:#2a323c;
+
+  --neon-green:#7fff6e;
+  --neon-pink:#ff5ea0;
+  --neon-amber:#ffb830;
+  --neon-blue:#5eb5ff;
+  --neon-red:#ff4444;
+  --neon-teal:#3ef0d0;
+
+  --display:'Syne','Orbitron',sans-serif;
+  --mono:'JetBrains Mono','Courier New',monospace;
+}
+
+html{
+  font-size:16px;
+  background:var(--void);
+  overflow-x:hidden;
+}
+
+body{
+  min-height:100vh;
+  background:
+    /* concrete base */
+    var(--concrete),
+    /* heavy grain overlay */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  font-family:var(--mono);
+  color:var(--chalk);
+  position:relative;
+}
+
+/* ---- halftone dot pattern overlay ---- */
+body::after{
+  content:'';
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  opacity:0.06;
+  background-image:
+    radial-gradient(circle,var(--chalk) 1px,transparent 1px);
+  background-size:6px 6px;
+}
+
+/* ============================================================
+   GIANT BACKGROUND TYPOGRAPHY — carved into the wall
+   ============================================================ */
+
+.wall-text{
+  position:fixed;
+  z-index:0;
+  pointer-events:none;
+  user-select:none;
+  font-family:var(--display);
+  font-weight:800;
+  text-transform:uppercase;
+  color:var(--rebar);
+  opacity:0.15;
+  font-size:clamp(6rem,18vw,14rem);
+  letter-spacing:-0.04em;
+  line-height:0.8;
+}
+
+.wall-text.tl{top:2%;left:-2%}
+.wall-text.tr{top:3%;right:-4%;font-size:clamp(4rem,12vw,10rem);opacity:0.1}
+.wall-text.bl{bottom:3%;left:-3%;font-size:clamp(5rem,14vw,11rem);opacity:0.12}
+.wall-text.br{bottom:5%;right:-2%;font-size:clamp(3rem,10vw,8rem);opacity:0.08}
+
+/* ============================================================
+   DECONSTRUCTED NAV — splattered across top
+   ============================================================ */
+
+.nav-splatter{
+  position:relative;
+  z-index:10;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  padding:var(--s6) var(--s8);
+  flex-wrap:wrap;
+  gap:var(--s4);
+}
+
+.site-brand{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:clamp(2.5rem,5vw,3.5rem);
+  text-transform:uppercase;
+  letter-spacing:-0.03em;
+  line-height:0.9;
+  color:var(--chalk);
+  transform:rotate(-1deg);
+}
+.site-brand .accent{
+  color:var(--neon-green);
+  display:inline-block;
+  transform:rotate(3deg) translateY(-4px);
+}
+
+.nav-links{
+  display:flex;
+  gap:var(--s8);
+  flex-wrap:wrap;
+  transform:rotate(1deg);
+}
+
+.nav-links a{
+  font-family:var(--display);
+  font-weight:700;
+  font-size:1.2rem;
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+  text-decoration:none;
+  color:var(--dust);
+  position:relative;
+  transition:color 0.15s;
+}
+.nav-links a::after{
+  content:'';
+  position:absolute;bottom:-4px;left:-4px;right:-4px;
+  height:4px;
+  background:var(--neon-teal);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform 0.2s;
+}
+.nav-links a:hover{color:var(--neon-teal)}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-links a.active{color:var(--neon-green)}
+
+/* ---- rubber stamp date ---- */
+.stamp-date{
+  font-family:var(--mono);
+  font-size:0.85rem;
+  color:var(--neon-pink);
+  border:2px solid var(--neon-pink);
+  padding:var(--s1) var(--s3);
+  display:inline-block;
+  transform:rotate(-2deg);
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  opacity:0.8;
+}
+
+/* ============================================================
+   FLYER WALL — posts scattered like posters
+   ============================================================ */
+
+.flyer-wall{
+  position:relative;
+  z-index:5;
+  padding:var(--s8) var(--s6) var(--s16);
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:var(--s8);
+  justify-items:center;
+}
+
+/* ---- individual flyer ---- */
+.flyer{
+  background:var(--concrete);
+  border:2px solid var(--rebar);
+  padding:var(--s6);
+  text-decoration:none;
+  color:inherit;
+  position:relative;
+  transition:transform 0.2s,border-color 0.2s,box-shadow 0.2s;
+  cursor:pointer;
+  max-width:380px;
+  width:100%;
+}
+
+/* each flyer has its own subtle rotation and offset */
+.flyer:nth-child(1){transform:rotate(-1.5deg);margin-top:var(--s4)}
+.flyer:nth-child(2){transform:rotate(1deg);margin-top:calc(-1 * var(--s2))}
+.flyer:nth-child(3){transform:rotate(-0.5deg);margin-top:var(--s6)}
+.flyer:nth-child(4){transform:rotate(2deg);margin-top:calc(-1 * var(--s4))}
+.flyer:nth-child(5){transform:rotate(-2deg);margin-top:var(--s2)}
+.flyer:nth-child(6){transform:rotate(0.8deg);margin-top:calc(-1 * var(--s3))}
+.flyer:nth-child(7){transform:rotate(-1.2deg);margin-top:var(--s8)}
+.flyer:nth-child(8){transform:rotate(1.5deg)}
+
+/* ---- flyer texture ---- */
+.flyer::before{
+  content:'';
+  position:absolute;inset:0;pointer-events:none;z-index:1;
+  opacity:0.08;
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 2px,var(--chalk) 2px,var(--chalk) 3px);
+}
+
+/* ---- flyer hover: lifts off the wall ---- */
+.flyer:hover{
+  transform:rotate(0deg) scale(1.03);
+  border-color:var(--neon-teal);
+  box-shadow:8px 8px 0 var(--neon-teal);
+  z-index:20;
+}
+
+/* ---- flyer date (rubber stamp) ---- */
+.flyer-date{
+  display:inline-block;
+  font-family:var(--mono);
+  font-size:0.7rem;
+  font-weight:700;
+  color:var(--neon-amber);
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  border:1px solid var(--neon-amber);
+  padding:2px 8px;
+  transform:rotate(-3deg);
+  margin-bottom:var(--s3);
+  opacity:0.85;
+}
+
+/* ---- flyer title: BOLD, may break container ---- */
+.flyer-title{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:clamp(1.3rem,2.5vw,1.8rem);
+  line-height:1.1;
+  letter-spacing:-0.02em;
+  color:var(--chalk);
+  margin-bottom:var(--s2);
+  transition:color 0.15s;
+  /* sometimes the title shifts out of the card */
+  position:relative;
+}
+.flyer:nth-child(odd) .flyer-title{transform:translateX(-4px)}
+.flyer:nth-child(even) .flyer-title{transform:translateX(3px)}
+.flyer:hover .flyer-title{color:var(--neon-green)}
+
+/* ---- flyer excerpt ---- */
+.flyer-excerpt{
+  font-family:var(--mono);
+  font-size:0.78rem;
+  line-height:1.6;
+  color:var(--dust);
+  margin-bottom:var(--s4);
+}
+
+/* ---- flyer tags: neon graffiti ---- */
+.flyer-tags{
+  display:flex;
+  gap:var(--s2);
+  flex-wrap:wrap;
+}
+.flyer-tag{
+  font-family:var(--mono);
+  font-size:0.62rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  padding:2px 8px;
+  border:1px solid;
+}
+.flyer-tag.tag-design{color:var(--neon-pink);border-color:var(--neon-pink)}
+.flyer-tag.tag-web{color:var(--neon-blue);border-color:var(--neon-blue)}
+.flyer-tag.tag-games{color:var(--neon-green);border-color:var(--neon-green)}
+.flyer-tag.tag-projects{color:var(--neon-amber);border-color:var(--neon-amber)}
+.flyer-tag.tag-personal{color:var(--neon-red);border-color:var(--neon-red)}
+.flyer-tag.tag-meta{color:var(--neon-teal);border-color:var(--neon-teal)}
+.flyer-tag.tag-philosophy{color:var(--dust);border-color:var(--dust)}
+.flyer-tag.tag-security{color:var(--neon-pink);border-color:var(--neon-pink)}
+.flyer-tag.tag-css{color:var(--neon-blue);border-color:var(--neon-blue)}
+.flyer-tag.tag-rust{color:var(--neon-amber);border-color:var(--neon-amber)}
+.flyer-tag.tag-reflection{color:var(--neon-red);border-color:var(--neon-red)}
+.flyer-tag.tag-retro{color:var(--neon-green);border-color:var(--neon-green)}
+.flyer-tag.tag-trading{color:var(--neon-amber);border-color:var(--neon-amber)}
+.flyer-tag.tag-experiments{color:var(--neon-teal);border-color:var(--neon-teal)}
+.flyer-tag.tag-lore{color:var(--neon-pink);border-color:var(--neon-pink)}
+
+/* ---- featured flyer (first post) ---- */
+.flyer.featured{
+  border-color:var(--neon-teal);
+  border-width:3px;
+  grid-column:span 2;
+  max-width:100%;
+  transform:rotate(0deg);
+  background:
+    linear-gradient(135deg,var(--concrete) 0%,var(--rebar) 100%);
+}
+.flyer.featured .flyer-title{font-size:clamp(1.6rem,3.5vw,2.2rem)}
+.flyer.featured .flyer-date{border-color:var(--neon-teal);color:var(--neon-teal);border-width:2px}
+
+/* ============================================================
+   SEARCH — deconstructed, bottom-left
+   ============================================================ */
+
+.search-chunk{
+  position:fixed;
+  bottom:var(--s8);
+  left:var(--s8);
+  z-index:30;
+  display:flex;
+  align-items:center;
+  gap:var(--s3);
+  background:var(--void);
+  border:2px solid var(--rebar);
+  padding:var(--s3) var(--s5);
+  transform:rotate(-1deg);
+}
+.search-chunk:focus-within{
+  border-color:var(--neon-teal);
+  transform:rotate(0deg);
+}
+
+.search-prompt{
+  font-family:var(--mono);
+  font-size:1rem;
+  font-weight:700;
+  color:var(--neon-teal);
+}
+.search-input{
+  background:transparent;
+  border:none;
+  font-family:var(--mono);
+  font-size:0.9rem;
+  color:var(--chalk);
+  outline:none;
+  width:16ch;
+  caret-color:var(--neon-teal);
+}
+.search-input::placeholder{color:var(--dust-dim)}
+
+/* ============================================================
+   FOOTER HINTS — top-right, floating
+   ============================================================ */
+
+.hint-chunk{
+  position:fixed;
+  top:var(--s8);
+  right:var(--s8);
+  z-index:30;
+  display:flex;
+  gap:var(--s6);
+  font-size:0.7rem;
+  color:var(--dust-dim);
+  background:var(--void);
+  border:1px solid var(--rebar);
+  padding:var(--s2) var(--s4);
+  transform:rotate(1deg);
+}
+.hint-chunk kbd{
+  font-family:var(--mono);
+  font-size:0.65rem;
+  color:var(--neon-green);
+  border:1px solid var(--rebar);
+  padding:1px 5px;
+}
+
+@media(max-width:768px){
+  .nav-splatter{padding:var(--s4)}
+  .site-brand{font-size:2rem}
+  .nav-links a{font-size:1rem}
+  .flyer-wall{padding:var(--s4);grid-template-columns:1fr;gap:var(--s6)}
+  .flyer.featured{grid-column:span 1}
+  .search-chunk{bottom:var(--s4);left:var(--s4)}
+  .hint-chunk{top:auto;bottom:var(--s4);right:var(--s4)}
+  .wall-text{display:none}
+}
+
+::selection{background:var(--neon-teal);color:var(--void)}
+</style>
+</head>
+<body>
+
+<!-- GIANT WALL TEXT — carved concrete lettering -->
+<div class="wall-text tl">TRUE</div>
+<div class="wall-text tr">GAV</div>
+<div class="wall-text bl">READ</div>
+<div class="wall-text br">THE</div>
+<div class="wall-text" style="top:45%;left:40%;font-size:clamp(3rem,8vw,6rem);opacity:0.06">WALLS</div>
+
+<!-- NAV SPLATTER -->
+<div class="nav-splatter">
+  <div class="site-brand"><span class="accent">TRUE</span><br>GAV</div>
+  <div class="nav-links">
+    <a href="#" class="active">posts</a>
+    <a href="#">tags</a>
+    <a href="#">about</a>
+  </div>
+  <div class="stamp-date">2026</div>
+</div>
+
+<!-- HINT CHUNK -->
+<div class="hint-chunk">
+  <span><kbd>j</kbd>/<kbd>k</kbd> browse</span>
+  <span><kbd>/</kbd> search</span>
+  <span><kbd>esc</kbd> back</span>
+</div>
+
+<!-- FLYER WALL -->
+<main class="flyer-wall">
+
+  <!-- FEATURED -->
+  <a href="#" class="flyer featured">
+    <span class="flyer-date">2026·06·19 — NEW</span>
+    <h2 class="flyer-title">The Pfhor Conspiracy: Re-reading Marathon's Narrative After Three Decades</h2>
+    <p class="flyer-excerpt">A deep dive into the terminal texts, the AIs, and what Bungie was really saying about consciousness and control. The Pfhor weren't the real enemy.</p>
+    <div class="flyer-tags">
+      <span class="flyer-tag tag-lore">lore</span>
+      <span class="flyer-tag tag-meta">meta</span>
+      <span class="flyer-tag tag-games">games</span>
+    </div>
+  </a>
+
+  <a href="#" class="flyer">
+    <span class="flyer-date">2026·05·28</span>
+    <h2 class="flyer-title">On Accountability &amp; Mistakes</h2>
+    <p class="flyer-excerpt">A personal reflection on getting things catastrophically wrong and learning to sit with shame.</p>
+    <div class="flyer-tags">
+      <span class="flyer-tag tag-personal">personal</span>
+      <span class="flyer-tag tag-reflection">reflection</span>
+    </div>
+  </a>
+
+  <a href="#" class="flyer">
+    <span class="flyer-date">2026·05·15</span>
+    <h2 class="flyer-title">Building a Quant Backtester from Scratch in Rust</h2>
+    <p class="flyer-excerpt">Order books, event loops, and the joy of zero-allocation hot paths.</p>
+    <div class="flyer-tags">
+      <span class="flyer-tag tag-projects">projects</span>
+      <span class="flyer-tag tag-rust">rust</span>
+      <span class="flyer-tag tag-trading">trading</span>
+    </div>
+  </a>
+
+  <a href="#" class="flyer">
+    <span class="flyer-date">2026·04·02</span>
+    <h2 class="flyer-title">Why Flat, Sharp, and Bold: A Design Language for the Web</h2>
+    <p class="flyer-excerpt">The Marathon aesthetic as a complete design philosophy. Typography, color, texture — from game engine to CSS.</p>
+    <div class="flyer-tags">
+      <span class="flyer-tag tag-design">design</span>
+      <span class="flyer-tag tag-web">web</span>
+      <span class="flyer-tag tag-philosophy">philosophy</span>
+    </div>
+  </a>
+
+  <a href="#" class="flyer">
+    <span class="flyer-date">2026·03·18</span>
+    <h2 class="flyer-title">AI Bug Bounty Triage</h2>
+    <p class="flyer-excerpt">Automating the noise away from vulnerability reports. What works, what doesn't.</p>
+    <div class="flyer-tags">
+      <span class="flyer-tag tag-projects">projects</span>
+      <span class="flyer-tag tag-security">security</span>
+    </div>
+  </a>
+
+  <a href="#" class="flyer">
+    <span class="flyer-date">2026·02·22</span>
+    <h2 class="flyer-title">Experiments with Bayer Dithering &amp; Noise Textures in CSS</h2>
+    <p class="flyer-excerpt">SVG feTurbulence, halftone patterns, and how to make the web feel like concrete.</p>
+    <div class="flyer-tags">
+      <span class="flyer-tag tag-design">design</span>
+      <span class="flyer-tag tag-css">css</span>
+      <span class="flyer-tag tag-experiments">experiments</span>
+    </div>
+  </a>
+
+  <a href="#" class="flyer">
+    <span class="flyer-date">2026·01·10</span>
+    <h2 class="flyer-title">Marathon at 32: The Game That Taught Us to Read the Walls</h2>
+    <div class="flyer-tags">
+      <span class="flyer-tag tag-games">games</span>
+      <span class="flyer-tag tag-retro">retro</span>
+      <span class="flyer-tag tag-design">design</span>
+    </div>
+  </a>
+
+  <a href="#" class="flyer">
+    <span class="flyer-date">2025·12·05</span>
+    <h2 class="flyer-title">Concrete &amp; Ink: Brutalist Design for the Static Web</h2>
+    <p class="flyer-excerpt">How the brutalist architectural movement maps onto web design — not as trend-chasing, but as honest material practice.</p>
+    <div class="flyer-tags">
+      <span class="flyer-tag tag-design">design</span>
+      <span class="flyer-tag tag-philosophy">philosophy</span>
+    </div>
+  </a>
+
+</main>
+
+<!-- SEARCH -->
+<div class="search-chunk">
+  <span class="search-prompt">/</span>
+  <input type="text" class="search-input" placeholder="search flyers...">
+</div>
+
+<script>
+document.querySelector('.search-input').addEventListener('keydown',function(e){
+  if(e.key==='Escape'){this.blur();this.value=''}
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TRUEGAV — Why Flat, Sharp, &amp; Bold</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,400;1,700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css?v=14">
+</head>
+<body class="shared-body">
+
+<div class="brand-field" aria-hidden="true">
+  <div class="brand-row r1">TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;</div>
+  <div class="brand-row r2">TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;</div>
+  <div class="brand-row r3">TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;</div>
+  <div class="brand-row r4">TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;</div>
+  <div class="brand-row r5">TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;TRUEGAV&bull;</div>
+</div>
+
+<header class="top-bar" style="padding:var(--s3) var(--s6);margin-bottom:0">
+  <div class="brand-mark" style="font-size:1.2rem"><a href="/"><span class="accent">TRUE</span>GAV</a></div>
+  <span class="stamp" style="color:var(--magenta);border-color:var(--magenta)">issue 04 &middot; apr 2026</span>
+  <nav class="nav-row">
+    <a href="/">← all posts</a>
+  </nav>
+</header>
+
+<article class="zine">
+
+  <div class="zine-main">
+
+    <div class="title-block">
+      <h1>Why Flat,<br>Sharp,<br>&amp; Bold</h1>
+      <div class="dateline">published 2026·04·02 &nbsp;&middot;&nbsp; 8 min read &nbsp;&middot;&nbsp; #design #web</div>
+    </div>
+
+    <div class="zine-body">
+
+      <p>There is a particular aesthetic that runs through Bungie's <strong>Marathon</strong> trilogy — a visual language born from the hard constraints of a 2.5D engine, yet so distinct that it defines the game's identity more than any plot point or mechanic. Flat textures. Sharp geometry. Bold color choices. Everything feels architectural, intentional, <em>constructed</em>.</p>
+
+      <p>This aesthetic isn't just a retro curiosity. It's a complete design philosophy that maps cleanly onto the web — onto typography, layout systems, color theory, and interaction design. And it's been hiding in plain sight, ignored by a web that chose smoothness over materiality.</p>
+
+      <blockquote>
+        The constraint forces intentionality. When you can't do realistic curves, you make geometry meaningful. When you can't do smooth gradients, you make every color choice deliberate. Every surface is a decision, not a render.
+      </blockquote>
+
+      <h2>The Three Forces</h2>
+
+      <p>The Marathon aesthetic is defined by three forces held in careful tension. <strong>Flatness</strong> — surfaces that read as planes, not as simulations of material. No gradients, no soft shadows, no glossy effects. <strong>Sharpness</strong> — the enforced orthogonal geometry of a 2.5D engine created a world of 90-degree angles, of architectural precision. <strong>Boldness</strong> — limited color palettes used with maximum impact. When you only have a few colors, every one of them has to carry weight.</p>
+
+      <p>Together, these forces produce something that feels more like <em>architecture</em> than like graphics. You're moving through a constructed space where every element justifies its presence or gets deleted.</p>
+
+      <h3>From Game Engine to CSS</h3>
+
+      <p>Translating this into web design: <strong>Flat:</strong> solid backgrounds, no box-shadow blur. <strong>Sharp:</strong> 2px solid borders as primary separators, geometric layouts. <strong>Bold:</strong> 2–3 accent colors on a neutral base, high contrast, typography that asserts itself.</p>
+
+      <p>But there's a fourth element: <strong>texture</strong>. Marathon's surfaces were flat colors with the grain of a texture map, the noise of a low-color-depth display. This is where dithering enters the vocabulary — and it's what makes a site feel like a <em>place</em> rather than a document.</p>
+
+      <h2>The Texture Layer</h2>
+
+      <p>Using SVG <code>feTurbulence</code> filters combined with CSS masks and high-frequency binary thresholding, we create pixel-perfect dithering — no intermediate colors, no gray values, each pixel is either pure color or fully transparent, with the density of colored pixels creating the illusion of a gradient.</p>
+
+      <pre><code>/* The dithering technique: binary noise mask over a color gradient */
+.card::after {
+  background: linear-gradient(to top, rgba(0,229,255,1), transparent 55%);
+  -webkit-mask-image: url(binary-noise.svg);
+  mask-image: url(binary-noise.svg);
+  mask-size: 512px 512px;
+}</code></pre>
+
+      <p>Each card on the homepage has its own dithered gradient — cyan, magenta, amber — at varying alpha densities. The blockquote above has a magenta dithered gradient bleeding from the left. The h2 headers have a cyan dithered gradient under their dotted borders. Everything is material.</p>
+
+      <h2>Typography as Architecture</h2>
+
+      <p>Marathon's <strong>Bank Gothic</strong> — geometric sans-serif with square proportions — was used for the game's UI. It looks like it was built from steel. The display font here is Syne (geometric, bold). The body is JetBrains Mono at 0.95rem / 1.8 line-height.</p>
+
+      <p>The TRUEGAV carrier wave behind everything has 5 rows at 15rem each — three filled, two outlined. They scroll horizontally — odd rows left, even rows right — at the same speed. A broadcast marquee. A machine.</p>
+
+      <h2>Breaking Rules Intentionally</h2>
+
+      <p>Cards touch at corners with -3px margins. The h1 spills 6% past the left edge. Tags spill out of the featured card's boundary. The blockquote breaks left into the gutter. Every break has a reason. The chaos is composed: consistent grid gaps, consistent typography, consistent dithered gradient technique on every surface.</p>
+
+      <h2>Where This Goes</h2>
+
+      <p>This isn't a theme. This is a wall, a zine, a broadcast. Every transition dithered. Every surface material. The flat/sharp/bold aesthetic rejects drop shadows, border-radius, muddy midtones. In their place: binary noise dithering, carrier waves, halftone dots, neon accents. A design you can feel.</p>
+
+    </div>
+
+    <nav class="zine-nav">
+      <a href="#">
+        <span class="nav-arrow">← previous issue</span>
+        <span class="nav-post-title">Experiments with Bayer Dithering &amp; Noise Textures in CSS</span>
+      </a>
+      <a href="#">
+        <span class="nav-arrow">next issue →</span>
+        <span class="nav-post-title">AI Bug Bounty Triage — Automating the Noise Away</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <aside class="zine-margin">
+    <div class="margin-note">
+      <span class="note-label">In this issue</span>
+      Part four in a series on material design for the static web. Previously: Concrete &amp; Ink, Bayer Dithering, The Wall of Noise.
+    </div>
+    <div class="margin-note">
+      <span class="note-label">Reading time</span>
+      About 8 minutes. Longer if you stop to examine the textures.
+    </div>
+    <div class="margin-note">
+      <span class="note-label">Tags</span>
+      <div class="margin-tags">
+        <a href="#">design</a>
+        <a href="#">web</a>
+        <a href="#">philosophy</a>
+        <a href="#">css</a>
+      </div>
+    </div>
+    <div class="margin-note">
+      <span class="margin-progress">§ 04 of 08</span>
+    </div>
+  </aside>
+
+</article>
+
+<footer class="bottom-bar">
+  <div class="search-chunk">
+    <span class="search-prompt">/</span>
+    <input type="text" class="search-input" placeholder="search posts...">
+  </div>
+  <div class="bottom-right">
+    <span><kbd>j</kbd>/<kbd>k</kbd> browse</span>
+    <span><kbd>/</kbd> search</span>
+    <span><kbd>esc</kbd> back</span>
+  </div>
+</footer>
+
+</body>
+</html>

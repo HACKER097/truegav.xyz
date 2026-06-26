@@ -1,0 +1,17 @@
+<footer class="site-footer">
+  <div>
+    <div class="footer-brand">{{ .Site.Title | upper }}</div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="{{ .Site.Home.RelPermalink }}">→ home</a></li>
+    {{ range .Site.Menus.main }}
+    <li><a href="{{ .URL }}">→ {{ .Name }}</a></li>
+    {{ end }}
+    {{ with .Site.Home.OutputFormats.Get "rss" }}
+    <li><a href="{{ .RelPermalink }}">→ rss</a></li>
+    {{ end }}
+  </ul>
+  <div class="footer-copy">
+    {{ .Site.Title }}
+  </div>
+</footer>

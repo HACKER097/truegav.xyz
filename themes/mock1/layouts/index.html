@@ -1,0 +1,104 @@
+{{- define "main" }}
+{{- $allPosts := .Site.RegularPages }}
+{{- $total := len $allPosts }}
+
+<section class="home-hero">
+  <div class="hero-text">
+    <div class="hero-name-wrap">
+      <h1 class="hero-name-solid">{{ .Site.Title | upper }}</h1>
+      <span class="hero-name-echo" style="--ey:-0.5em;--ex:-0.35em;--opacity:0.7" aria-hidden="true">{{ .Site.Title | upper }}</span>
+      <span class="hero-name-echo" style="--ey:-0.25em;--ex:-0.18em;--opacity:0.8" aria-hidden="true">{{ .Site.Title | upper }}</span>
+      <span class="hero-name-echo" style="--ey:0.25em;--ex:0.18em;--opacity:0.8" aria-hidden="true">{{ .Site.Title | upper }}</span>
+      <span class="hero-name-echo" style="--ey:0.5em;--ex:0.35em;--opacity:0.7" aria-hidden="true">{{ .Site.Title | upper }}</span>
+    </div>
+  </div>
+
+  <div class="hero-geo">
+    <svg id="hero-geo-svg" viewBox="0 0 700 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g id="geo-group"     stroke="#c8ff00" stroke-width="0.35" fill="none" opacity="0.7"></g>
+      <g id="geo-group-dim" stroke="#ede9e0" stroke-width="0.2"  fill="none" opacity="0.07"></g>
+      <g id="geo-group-mid" stroke="#8baf00" stroke-width="0.28" fill="none" opacity="0.3"></g>
+      <g id="geo-particles" fill="#c8ff00"></g>
+    </svg>
+  </div>
+</section>
+
+{{- if gt $total 0 }}
+<section class="posts-section" id="posts">
+  <div class="posts-header">
+    <span class="posts-header-label">// posts</span>
+    <span class="posts-header-count">{{ $total }} entries</span>
+  </div>
+  {{- range $i, $post := $allPosts }}
+  {{- if eq $i 0 }}
+  {{- $postNum := $total }}
+  <a href="{{ $post.RelPermalink }}" class="featured-post">
+    <div class="featured-eyebrow">
+      <span>{{ $post.Date.Format "Jan 02, 2006" }}</span>
+      <span>·</span>
+      <span>{{ $post.ReadingTime }} min</span>
+      {{- with $post.Params.tags }}
+      <span>·</span>
+      {{- range . }}<span class="tag">{{ . }}</span>{{ end }}
+      {{- end }}
+    </div>
+    <h2 class="featured-title">{{ $post.Title }}</h2>
+    <div class="featured-body">
+      <p class="featured-summary">{{ $post.Summary | plainify | truncate 300 }}</p>
+      <div class="featured-aside">
+        <div class="featured-meta-row">
+          <span class="featured-meta-label">post</span>
+          <span class="featured-meta-val" style="font-size:36px;font-weight:100;color:var(--faint);letter-spacing:-0.04em;">{{ printf "%03d" $postNum }}</span>
+        </div>
+        <div class="featured-meta-row">
+          <span class="featured-meta-label">reading time</span>
+          <span class="featured-meta-val">{{ $post.ReadingTime }} min</span>
+        </div>
+        <div class="featured-meta-row">
+          <span class="featured-meta-label">published</span>
+          <span class="featured-meta-val">{{ $post.Date.Format "Jan 02, 2006" }}</span>
+        </div>
+      </div>
+    </div>
+  </a>
+  {{- else }}
+  {{- $postNum := sub $total $i }}
+  <a href="{{ $post.RelPermalink }}" class="post-card">
+    <div class="post-date-col">
+      <div class="post-date-year">{{ $post.Date.Format "2006" }}</div>
+      <div class="post-date-day">{{ $post.Date.Format "02" }}</div>
+      <div class="post-date-mon">{{ $post.Date.Format "Jan" }}</div>
+    </div>
+    <div class="post-body-col">
+      <div class="post-tags">
+      {{- with $post.Params.tags }}
+        {{- range . }}<span class="tag">{{ . }}</span>{{ end }}
+      {{- end }}
+      </div>
+      <h2 class="post-title">{{ $post.Title }}</h2>
+      <p class="post-summary">{{ $post.Summary | plainify | truncate 200 }}</p>
+    </div>
+    <div class="post-stats-col">
+      <span class="read-time">{{ $post.ReadingTime }} min</span>
+      <span class="post-index">{{ printf "%03d" $postNum }}</span>
+    </div>
+  </a>
+  {{- end }}
+  {{- end }}
+</section>
+{{- end }}
+
+{{- with .Site.Taxonomies.tags }}
+<section class="tags-cloud">
+  <div class="posts-header" style="margin-bottom:var(--gap-lg);">
+    <span class="posts-header-label">// tags</span>
+    <span class="posts-header-count">{{ len . }} topics</span>
+  </div>
+  <div class="tags-list">
+    {{- range .ByCount }}
+    <a href="{{ .Page.RelPermalink }}" class="tag">{{ .Page.Title }}</a>
+    {{- end }}
+  </div>
+</section>
+{{- end }}
+{{- end }}

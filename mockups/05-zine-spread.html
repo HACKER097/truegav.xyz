@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup 05 — The Zine Spread</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,400;1,700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   MOCKUP 05 — THE ZINE SPREAD
+   Single post. Photocopied zine blown up to web scale.
+   Asymmetric. Overlapping. Textured to hell.
+   ============================================================ */
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --void:#0f1215;
+  --paper:#e8e4db;
+  --paper-dim:#d5d0c5;
+  --ink:#1a1a1a;
+  --ink-dim:#4a4a4a;
+  --red-ink:#d93636;
+  --blue-ink:#3b6fb6;
+  --teal-ink:#2a9d8f;
+  --amber-ink:#c77d20;
+  --green-ink:#4a9c5d;
+
+  --display:'Syne',sans-serif;
+  --mono:'JetBrains Mono','Courier New',monospace;
+}
+
+html{font-size:16px;background:var(--paper)}
+
+body{
+  min-height:100vh;
+  font-family:var(--mono);
+  color:var(--ink);
+  position:relative;
+  /* paper texture */
+  background:
+    var(--paper),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+}
+
+/* ---- photocopy grain —— visible, aggressive ---- */
+body::after{
+  content:'';
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  opacity:0.12;
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 1px,var(--ink) 1px,var(--ink) 2px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='x'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23x)'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+
+/* ============================================================
+   TOP STRIP — deconstructed return nav
+   ============================================================ */
+
+.top-strip{
+  position:relative;z-index:10;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  padding:var(--s4) var(--s6);
+  border-bottom:3px solid var(--ink);
+  flex-wrap:wrap;
+  gap:var(--s4);
+  /* slight rotation — nothing is straight */
+  transform:rotate(-0.2deg);
+}
+
+.top-strip a{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:1rem;
+  text-transform:uppercase;
+  letter-spacing:0.03em;
+  text-decoration:none;
+  color:var(--ink);
+  transition:color 0.15s;
+}
+.top-strip a:hover{color:var(--red-ink)}
+
+.top-stamp{
+  font-family:var(--mono);
+  font-size:0.7rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.12em;
+  color:var(--red-ink);
+  border:2px solid var(--red-ink);
+  padding:2px 10px;
+  transform:rotate(-3deg);
+}
+
+/* ============================================================
+   ZINE LAYOUT — the spread
+   ============================================================ */
+
+.zine{
+  position:relative;z-index:5;
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:0;
+  max-width:64rem;
+  margin:0 auto;
+  padding:var(--s6);
+}
+
+/* ---- main column ---- */
+.zine-main{
+  padding-right:var(--s8);
+  position:relative;
+}
+
+/* ---- margin column ---- */
+.zine-margin{
+  padding-left:var(--s4);
+  border-left:2px solid var(--ink-dim);
+  position:relative;
+  transform:rotate(0.3deg);
+}
+
+/* ============================================================
+   TITLE — massive, may break out
+   ============================================================ */
+
+.post-title-block{
+  margin-bottom:var(--s8);
+  position:relative;
+}
+
+.post-title-block h1{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:clamp(2.5rem,7vw,5rem);
+  line-height:0.95;
+  letter-spacing:-0.03em;
+  color:var(--ink);
+  text-transform:uppercase;
+  /* the title breaks the column */
+  margin-left:-5%;
+  width:110%;
+}
+
+/* ---- subtitle / dateline — stamped at an angle ---- */
+.post-dateline{
+  display:inline-block;
+  font-family:var(--mono);
+  font-size:0.78rem;
+  font-weight:700;
+  color:var(--red-ink);
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  border:2px solid var(--ink);
+  padding:var(--s1) var(--s4);
+  transform:rotate(-1.5deg);
+  margin-top:var(--s4);
+  margin-bottom:var(--s6);
+}
+
+.post-dateline .by{color:var(--ink-dim);font-weight:400}
+.post-dateline .tags-inline{color:var(--blue-ink)}
+
+/* ============================================================
+   CONTENT BODY — the zine text
+   ============================================================ */
+
+.zine-body{
+  font-family:var(--mono);
+  line-height:1.8;
+  font-size:0.95rem;
+}
+
+.zine-body p{
+  margin-bottom:var(--s5);
+  text-indent:0;
+}
+
+/* drop cap on first paragraph */
+.zine-body p:first-of-type::first-letter{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:3.5rem;
+  float:left;
+  line-height:0.8;
+  padding-right:var(--s2);
+  padding-top:var(--s1);
+  color:var(--red-ink);
+}
+
+.zine-body h2{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:1.6rem;
+  text-transform:uppercase;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  margin:var(--s8) 0 var(--s3);
+  border-top:3px solid var(--ink);
+  padding-top:var(--s3);
+  /* break column */
+  margin-left:-3%;
+}
+
+.zine-body h3{
+  font-family:var(--display);
+  font-weight:700;
+  font-size:1.1rem;
+  color:var(--blue-ink);
+  margin:var(--s6) 0 var(--s2);
+}
+
+.zine-body strong{color:var(--ink);font-weight:700}
+.zine-body em{font-style:italic;color:var(--ink-dim)}
+
+.zine-body a{
+  color:var(--ink);
+  text-decoration:none;
+  border-bottom:2px solid var(--red-ink);
+  transition:border-color 0.12s;
+}
+.zine-body a:hover{border-bottom-color:var(--ink)}
+
+/* ---- blockquote: pulls out into margin ---- */
+.zine-body blockquote{
+  font-family:var(--display);
+  font-weight:700;
+  font-size:1.3rem;
+  line-height:1.2;
+  color:var(--red-ink);
+  border:none;
+  margin:var(--s6) calc(-1 * var(--s8)) var(--s6) -3%;
+  padding:var(--s4);
+  position:relative;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 4px,
+      var(--paper-dim) 4px,
+      var(--paper-dim) 5px
+    );
+}
+.zine-body blockquote::before{
+  content:'\201C';
+  font-family:var(--display);
+  font-size:5rem;
+  font-weight:800;
+  position:absolute;
+  top:-2rem;left:-1rem;
+  color:var(--paper-dim);
+  z-index:-1;
+  line-height:1;
+}
+
+.zine-body ul,.zine-body ol{
+  margin:0 0 var(--s5) var(--s5);
+}
+.zine-body li{margin-bottom:var(--s1)}
+.zine-body li::marker{color:var(--red-ink)}
+
+/* ---- code: distressed surface ---- */
+.zine-body pre{
+  background:var(--ink);
+  color:var(--paper);
+  border:2px solid var(--ink);
+  border-radius:0;
+  padding:var(--s5);
+  overflow-x:auto;
+  font-size:0.82rem;
+  line-height:1.6;
+  margin:var(--s6) 0;
+  position:relative;
+  /* break the column */
+  margin-left:-2%;
+  width:104%;
+}
+.zine-body pre::before{
+  content:'';
+  position:absolute;inset:0;pointer-events:none;z-index:1;
+  opacity:0.06;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='cs'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23cs)'/%3E%3C/svg%3E");
+}
+
+.zine-body code{
+  font-family:var(--mono);
+  font-size:0.82rem;
+}
+.zine-body p code,.zine-body li code{
+  background:var(--paper-dim);
+  color:var(--red-ink);
+  padding:0.1em 0.4em;
+  border:1px solid var(--ink-dim);
+  font-size:0.85em;
+}
+
+/* ---- images: bleed ---- */
+.zine-body img{
+  max-width:110%;
+  margin-left:-5%;
+  border:2px solid var(--ink);
+  display:block;
+  margin-top:var(--s6);
+  margin-bottom:var(--s6);
+}
+
+/* ---- tables: raw ---- */
+.zine-body table{
+  width:100%;
+  border-collapse:collapse;
+  margin:var(--s6) 0;
+  font-size:0.85rem;
+  border:2px solid var(--ink);
+}
+.zine-body th{
+  font-family:var(--display);
+  font-weight:800;
+  text-transform:uppercase;
+  font-size:0.7rem;
+  letter-spacing:0.08em;
+  color:var(--ink);
+  text-align:left;
+  padding:var(--s2) var(--s3);
+  border-bottom:2px solid var(--ink);
+  background:var(--paper-dim);
+}
+.zine-body td{
+  padding:var(--s2) var(--s3);
+  border-bottom:1px solid var(--ink-dim);
+}
+
+/* ============================================================
+   MARGIN COLUMN — marginalia
+   ============================================================ */
+
+.margin-note{
+  font-family:var(--mono);
+  font-size:0.65rem;
+  line-height:1.5;
+  color:var(--ink-dim);
+  margin-bottom:var(--s6);
+  font-style:italic;
+}
+
+.margin-note .note-label{
+  display:block;
+  font-family:var(--display);
+  font-weight:700;
+  font-size:0.7rem;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  color:var(--red-ink);
+  font-style:normal;
+  margin-bottom:var(--s1);
+}
+
+.margin-tags{
+  display:flex;
+  flex-direction:column;
+  gap:var(--s2);
+}
+.margin-tags a{
+  font-family:var(--mono);
+  font-size:0.7rem;
+  font-weight:700;
+  color:var(--blue-ink);
+  text-decoration:none;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  transition:color 0.12s;
+  border-bottom:1px dotted var(--ink-dim);
+  padding-bottom:2px;
+}
+.margin-tags a:hover{color:var(--red-ink)}
+.margin-tags a::before{content:'# '}
+
+/* ---- sticky reading position ---- */
+.margin-reading{
+  font-family:var(--mono);
+  font-size:0.62rem;
+  color:var(--ink-dim);
+  border:1px solid var(--ink-dim);
+  padding:var(--s1) var(--s2);
+  display:inline-block;
+  transform:rotate(-2deg);
+}
+
+/* ============================================================
+   POST-NAV — torn-edge footer
+   ============================================================ */
+
+.zine-nav{
+  margin-top:var(--s12);
+  padding-top:var(--s6);
+  border-top:3px solid var(--ink);
+  display:flex;
+  justify-content:space-between;
+  gap:var(--s6);
+  transform:rotate(0.2deg);
+}
+
+.zine-nav a{
+  font-family:var(--display);
+  font-weight:700;
+  text-decoration:none;
+  color:var(--ink);
+  display:flex;
+  flex-direction:column;
+  gap:var(--s1);
+  transition:color 0.12s;
+}
+.zine-nav a:hover{color:var(--red-ink)}
+.zine-nav a:last-child{text-align:right}
+
+.nav-arrow{
+  font-family:var(--mono);
+  font-size:0.6rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.15em;
+  color:var(--ink-dim);
+}
+.nav-post-title{
+  font-size:0.9rem;
+  line-height:1.3;
+}
+
+@media(max-width:768px){
+  .zine{grid-template-columns:1fr;padding:var(--s4)}
+  .zine-main{padding-right:0}
+  .zine-margin{display:none}
+  .post-title-block h1{font-size:2rem;margin-left:0;width:100%}
+  .zine-body blockquote{margin:var(--s6) 0;font-size:1.1rem}
+  .zine-body pre{margin-left:0;width:100%}
+  .zine-body img{max-width:100%;margin-left:0}
+}
+
+::selection{background:var(--ink);color:var(--paper)}
+</style>
+</head>
+<body>
+
+<div class="top-strip">
+  <a href="/">← TRUE<span style="color:var(--red-ink)">GAV</span></a>
+  <div class="top-stamp">issue #04 &middot; apr 2026</div>
+  <a href="/">all issues →</a>
+</div>
+
+<article class="zine">
+
+  <!-- MAIN COLUMN -->
+  <div class="zine-main">
+
+    <div class="post-title-block">
+      <h1>Why Flat,<br>Sharp,<br>&amp; Bold</h1>
+      <div class="post-dateline">
+        <span class="by">published</span> 2026·04·02 
+        &nbsp;<span class="tags-inline">#design #web</span>
+      </div>
+    </div>
+
+    <div class="zine-body">
+
+      <p>There is a particular aesthetic that runs through Bungie's <strong>Marathon</strong> trilogy — a visual language born from the hard constraints of a 2.5D engine, yet so distinct that it defines the game's identity more than any plot point or mechanic. Flat textures. Sharp geometry. Bold color choices. Everything feels architectural, intentional, <em>constructed</em>.</p>
+
+      <p>This aesthetic isn't just a retro curiosity. It's a complete design philosophy that maps cleanly onto the web — onto typography, layout systems, color theory, and interaction design. And it's been hiding in plain sight, ignored by a web that chose smoothness over materiality.</p>
+
+      <blockquote>
+        The constraint forces intentionality. When you can't do realistic curves, you make geometry meaningful. Every surface is a decision, not a render.
+      </blockquote>
+
+      <h2>The Three Forces</h2>
+
+      <p>The Marathon aesthetic is defined by three forces held in tension. <strong>Flatness</strong> — surfaces that read as planes, not as simulations of material. No gradients, no soft shadows, no glossy effects. <strong>Sharpness</strong> — the enforced orthogonal geometry created a world of 90-degree angles, of architectural precision. No organic curves. <strong>Boldness</strong> — limited color palettes used with maximum impact. When you only have a few colors, every one of them has to carry weight.</p>
+
+      <p>Together, these forces produce something that feels more like <em>architecture</em> than like graphics. You're not looking at pictures — you're moving through a constructed space where every element justifies its presence or gets deleted.</p>
+
+      <h3>From Game Engine to CSS</h3>
+
+      <p>Translating this into web design means understanding what each force demands. <strong>Flat:</strong> solid color backgrounds, no box-shadow blur, no gradients except where they serve a specific structural purpose. <strong>Sharp:</strong> 2px solid borders as the primary visual separator, geometric layouts, structural clarity over decoration. <strong>Bold:</strong> 2–3 accent colors on a neutral base, high contrast between surface levels, typography that asserts itself.</p>
+
+      <p>But there's a fourth element that most discussions miss entirely: <strong>texture</strong>. Marathon's surfaces weren't just flat colors — they were flat colors with the faint grain of a texture map, the subtle noise of a low-color-depth display, the materiality of concrete and metal. This is where dithering enters the vocabulary.</p>
+
+      <h2>The Texture Layer</h2>
+
+      <p>Using SVG <code>feTurbulence</code> filters, we can add grain to any surface — concrete texture on backgrounds, paper grain on content areas, static on interactive elements. The noise is never the point. It's the <em>feeling</em> of material. At 5–10% opacity, you see it consciously — and that's the point. This zine spread you're reading right now has three layers of texture: paper grain, photocopy lines, and fractal noise. It should feel like something you could touch.</p>
+
+      <pre><code>/* Photocopied zine texture — visible, unapologetic */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none;
+  opacity: 0.12;
+  background:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 1px,
+      var(--ink) 1px, var(--ink) 2px
+    ),
+    url("noise.svg");
+  mix-blend-mode: multiply;
+}</code></pre>
+
+      <p>The technique is lightweight — SVG data URIs, no JavaScript, no HTTP requests. The entire texture system adds maybe 500 bytes. But the <em>feel</em> it adds is immeasurable. A website without texture is a website without skin.</p>
+
+      <h2>Typography as Architecture</h2>
+
+      <p>Marathon's type choices were architectural before "architectural typography" was a trend. <strong>Bank Gothic</strong> — a geometric sans-serif with square proportions — was used for the game's manual and UI elements. It's a font that looks like it was built from steel beams. For the web, the open-source Squarish Sans CT carries that lineage. Paired with a monospace body font, you get the full spectrum: architectural headers that feel carved into the wall, precise body text that feels like printed matter on coarse paper.</p>
+
+      <p>But here's the thing about type in a zine aesthetic: it shouldn't always behave. Sometimes it should break the column. Sometimes it should overlap. The goal isn't legibility above all — it's <em>presence</em> above all. Legibility follows from presence, not from politeness.</p>
+
+      <h2>Where This Goes</h2>
+
+      <p>The flat/sharp/bold aesthetic isn't a "retro" style — it's a <em>materially honest</em> one. It rejects the fake depth of drop shadows, the artificial smoothness of heavy border-radius, the muddy midtones of "modern" palette generators. In their place, it offers something rarer: a design that you can feel in your fingertips.</p>
+
+      <p>This isn't a Hugo theme. This isn't a blog template. This is a zine spread, a concrete wall, a photocopied manifesto. And every element on this page — the rotating dateline, the bleeding code blocks, the pull quote that invades your margin, the scan lines in the texture — is here because it <em>refuses</em> to apologize for existing.</p>
+
+    </div>
+
+    <!-- POST NAV -->
+    <nav class="zine-nav">
+      <a href="#">
+        <span class="nav-arrow">← previous issue</span>
+        <span class="nav-post-title">Bayer Dithering in CSS</span>
+      </a>
+      <a href="#">
+        <span class="nav-arrow">next issue →</span>
+        <span class="nav-post-title">AI Bug Bounty Triage</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <!-- MARGIN COLUMN -->
+  <aside class="zine-margin">
+
+    <div class="margin-note">
+      <span class="note-label">About this issue</span>
+      Part four in an ongoing series about material design for the static web. Previously: Concrete &amp; Ink, Bayer Dithering, The Wall of Noise.
+    </div>
+
+    <div class="margin-note">
+      <span class="note-label">Reading time</span>
+      ~8 minutes at normal speed. Longer if you stop to look at the textures.
+    </div>
+
+    <div class="margin-note">
+      <span class="note-label">Tags</span>
+      <div class="margin-tags">
+        <a href="#">design</a>
+        <a href="#">web</a>
+        <a href="#">philosophy</a>
+        <a href="#">css</a>
+      </div>
+    </div>
+
+    <div class="margin-note">
+      <span class="margin-reading">§ 04 of 08</span>
+    </div>
+
+  </aside>
+
+</article>
+
+</body>
+</html>

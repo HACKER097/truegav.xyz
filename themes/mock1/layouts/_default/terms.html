@@ -1,0 +1,14 @@
+{{ define "main" }}
+<section class="list-section">
+  <div class="section-label">// tags</div>
+  <div class="posts-header" style="border-top:none;padding-top:0;margin-bottom:var(--gap-lg);">
+    <span class="posts-header-label">// topics</span>
+    <span class="posts-header-count">{{ len .Pages }} topics</span>
+  </div>
+  <div class="taxonomy-cloud">
+    {{ range .Pages }}
+    <a href="{{ .RelPermalink }}" class="tag">{{ .Title }}</a>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

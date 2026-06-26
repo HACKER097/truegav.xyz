@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup 09 — The Zine (Post)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,400;1,700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+@keyframes drift1{0%{transform:translate(0,0)}100%{transform:translate(-20px,15px)}}
+@keyframes drift2{0%{transform:translate(0,0)}100%{transform:translate(18px,-10px)}}
+@keyframes drift3{0%{transform:translate(0,0)}100%{transform:translate(-10px,-18px)}}
+.brand-pattern .l1{animation:drift1 50s linear infinite}
+.brand-pattern .l2{animation:drift2 60s linear infinite}
+.brand-pattern .l3{animation:drift3 45s linear infinite}
+</style>
+</head>
+<body class="shared-body post-body">
+
+<!-- ANIMATED BRAND PATTERN -->
+<div class="brand-pattern" aria-hidden="true">
+<span class="l1">TRUEGAV TRUE TRUEGAV GAV TRUEGAV TRUE GAV TRUEGAV TRUE TRUEGAV GAV TRUEGAV TRUE GAV TRUEGAV TRUEGAV TRUE TRUEGAV GAV TRUE GAV TRUEGAV TRUE TRUEGAV GAV TRUEGAV TRUEGAV TRUE GAV TRUEGAV GAV TRUEGAV TRUE GAV TRUEGAV TRUEGAV TRUE GAV TRUEGAV GAV TRUEGAV TRUEGAV TRUE GAV TRUEGAV TRUE TRUEGAV GAV TRUE GAV TRUEGAV TRUE TRUEGAV GAV TRUEGAV</span>
+<span class="l2">GAV TRUEGAV GAV TRUE TRUEGAV GAV TRUEGAV TRUE GAV TRUEGAV GAV TRUEGAV TRUE TRUEGAV GAV TRUE GAV TRUEGAV GAV TRUEGAV TRUE GAV TRUEGAV TRUE TRUEGAV GAV TRUEGAV GAV TRUE TRUEGAV GAV TRUEGAV TRUE GAV TRUEGAV GAV TRUE GAV TRUEGAV GAV TRUEGAV TRUE TRUEGAV GAV TRUEGAV TRUE GAV TRUEGAV GAV TRUEGAV TRUE GAV TRUEGAV GAV TRUE TRUEGAV</span>
+<span class="l3">TRUE GAV TRUEGAV TRUE TRUEGAV GAV TRUE GAV TRUEGAV TRUE TRUEGAV GAV TRUEGAV TRUEGAV TRUE GAV TRUEGAV GAV TRUEGAV TRUE GAV TRUEGAV TRUE TRUEGAV GAV TRUE GAV TRUEGAV TRUE TRUEGAV GAV TRUEGAV GAV TRUE TRUEGAV GAV TRUEGAV TRUE GAV TRUEGAV GAV TRUEGAV TRUE GAV TRUEGAV GAV TRUE TRUEGAV GAV TRUEGAV TRUE GAV</span>
+</div>
+
+<!-- WALL GLYPHS — more subtle on post page -->
+<div class="wall-glyph" style="top:3%;right:-2%;opacity:0.05;">READ</div>
+
+<!-- TOP BAR (compact for reading) -->
+<header class="top-bar" style="padding:var(--s3) var(--s6);margin-bottom:0">
+  <div class="brand-mark" style="font-size:1.2rem"><a href="/"><span class="accent">TRUE</span>GAV</a></div>
+  <span class="top-stamp">issue 04 &middot; apr 2026</span>
+  <nav class="nav-row">
+    <a href="/">← all posts</a>
+  </nav>
+</header>
+
+<!-- ZINE GRID -->
+<article class="zine">
+
+  <div class="zine-main">
+
+    <div class="title-block">
+      <h1>Why Flat,<br>Sharp,<br>&amp; Bold</h1>
+      <div class="dateline">published 2026·04·02 &nbsp;&middot;&nbsp; 8 min read &nbsp;&middot;&nbsp; #design #web</div>
+    </div>
+
+    <div class="zine-body">
+
+      <p>There is a particular aesthetic that runs through Bungie's <strong>Marathon</strong> trilogy — a visual language born from the hard constraints of a 2.5D engine, yet so distinct that it defines the game's identity more than any plot point or mechanic. Flat textures. Sharp geometry. Bold color choices. Everything feels architectural, intentional, <em>constructed</em>.</p>
+
+      <p>This aesthetic isn't just a retro curiosity. It's a complete design philosophy that maps cleanly onto the web — onto typography, layout systems, color theory, and interaction design. And it's been hiding in plain sight, ignored by a web that chose smoothness over materiality, comfort over conviction.</p>
+
+      <blockquote>
+        The constraint forces intentionality. When you can't do realistic curves, you make geometry meaningful. When you can't do smooth gradients, you make every color choice deliberate. Every surface is a decision, not a render.
+      </blockquote>
+
+      <h2>The Three Forces</h2>
+
+      <p>The Marathon aesthetic is defined by three forces held in careful tension. <strong>Flatness</strong> — surfaces that read as planes, not as simulations of material. No gradients, no soft shadows, no glossy effects. <strong>Sharpness</strong> — the enforced orthogonal geometry of a 2.5D engine created a world of 90-degree angles, of architectural precision. No organic curves. <strong>Boldness</strong> — limited color palettes used with maximum impact. When you only have a few colors, every one of them has to carry weight.</p>
+
+      <p>Together, these forces produce something that feels more like <em>architecture</em> than like graphics. You're not looking at pictures — you're moving through a constructed space where every element justifies its presence. This is the opposite of the "muddy realism" that dominated late-2000s game design.</p>
+
+      <h3>From Game Engine to CSS</h3>
+
+      <p>Translating this into web design means understanding what each force demands. <strong>Flat:</strong> solid color backgrounds, no box-shadow blur. <strong>Sharp:</strong> 2px solid borders as the primary visual separator. <strong>Bold:</strong> 2–3 accent colors on a neutral base, high contrast between surface levels.</p>
+
+      <p>But there's a fourth element: <strong>texture</strong>. Marathon's surfaces weren't just flat colors — they were flat colors with the faint grain of a texture map, the subtle noise of a low-color-depth display, the materiality of concrete and metal. This is where dithering enters the vocabulary, and it's what makes a site feel like a <em>place</em>.</p>
+
+      <h2>The Texture Layer</h2>
+
+      <p>Using SVG <code>feTurbulence</code> filters, we can add grain to any surface — concrete texture on backgrounds, static on interactive elements. The noise is never the point. It's the <em>feeling</em> of material. This page has a halftone dot grid, animated brand pattern drifting at different speeds, concrete grain, and coarse noise on code blocks.</p>
+
+      <pre><code>/* Three-layer texture system */
+body::before {
+  /* layer 1: concrete grain */
+  opacity: 0.35;
+  background: var(--wall), var(--tex-concrete);
+}
+body::after {
+  /* layer 2: halftone dots */
+  opacity: 0.06;
+  background: radial-gradient(
+    circle, var(--chalk) 1.2px, transparent 1.2px
+  );
+  background-size: 8px 8px;
+}
+.brand-pattern {
+  /* layer 3: drifting TRUEGAV text */
+  opacity: 0.04;
+  animation: drift 50s linear infinite;
+}</code></pre>
+
+      <p>The technique is lightweight — SVG data URIs, zero HTTP requests, about 500 bytes in the stylesheet. No JavaScript, no WebGL. The entire texture system renders natively. But the <em>feel</em> it adds is immeasurable.</p>
+
+      <h2>Typography as Architecture</h2>
+
+      <p>Marathon's type choices were architectural. <strong>Bank Gothic</strong> — a geometric sans-serif with square proportions — was used for the game's UI. It looks like it was built from steel beams. For the web, the open-source Squarish Sans CT carries that lineage. Paired with a monospace body font, you get the full spectrum: headers carved into the wall, body text like printed matter.</p>
+
+      <p>The display font here is <strong>Syne</strong> — geometric, bold, architectural. The body is JetBrains Mono at 0.95rem with 1.8 line-height — comfortable for long reading but never soft.</p>
+
+      <h2>Breaking Rules Intentionally</h2>
+
+      <p>Chaos must be <em>composed</em>. Every broken rule needs a reason. The cards on the homepage are rotated between -1 and +1.5 degrees — organic, not drunk. The blockquote pulls into the margin. The h1 spills 5% past the left edge. The code blocks push 4% past the right. These breakouts are punctuation — the rest of the reading experience is disciplined.</p>
+
+      <p>The animated TRUEGAV pattern in the background drifts at different speeds in different neon colors. It's subtle — 4% opacity — but it makes the wall feel <em>alive</em>. It's not a static background. It breathes.</p>
+
+      <h2>Where This Goes</h2>
+
+      <p>The flat/sharp/bold aesthetic rejects drop shadows, heavy border-radius, muddy midtones. In their place: a design you can feel. This isn't a Hugo theme or a blog template. It's a wall. And every element — the dithered borders, the drifting text, the halftone dots, the neon tags — is here because it <em>refuses</em> to apologize.</p>
+
+    </div>
+
+    <nav class="zine-nav">
+      <a href="#">
+        <span class="nav-arrow">← previous issue</span>
+        <span class="nav-post-title">Experiments with Bayer Dithering &amp; Noise Textures in CSS</span>
+      </a>
+      <a href="#">
+        <span class="nav-arrow">next issue →</span>
+        <span class="nav-post-title">AI Bug Bounty Triage — Automating the Noise Away</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <!-- MARGIN COLUMN -->
+  <aside class="zine-margin">
+    <div class="margin-note">
+      <span class="note-label">In this issue</span>
+      Part four in a series on material design for the static web. Previously: Concrete &amp; Ink, Bayer Dithering, The Wall of Noise.
+    </div>
+    <div class="margin-note">
+      <span class="note-label">Reading time</span>
+      About 8 minutes. Longer if you stop to examine the textures.
+    </div>
+    <div class="margin-note">
+      <span class="note-label">Tags</span>
+      <div class="margin-tags">
+        <a href="#">design</a>
+        <a href="#">web</a>
+        <a href="#">philosophy</a>
+        <a href="#">css</a>
+      </div>
+    </div>
+    <div class="margin-note">
+      <span class="margin-progress">§ 04 of 08</span>
+    </div>
+  </aside>
+
+</article>
+
+<!-- BOTTOM BAR -->
+<footer class="bottom-bar">
+  <div class="search-chunk">
+    <span class="search-prompt">/</span>
+    <input type="text" class="search-input" placeholder="search posts...">
+  </div>
+  <div class="bottom-right">
+    <span><kbd>j</kbd>/<kbd>k</kbd> browse</span>
+    <span><kbd>/</kbd> search</span>
+    <span><kbd>esc</kbd> back</span>
+  </div>
+</footer>
+
+</body>
+</html>

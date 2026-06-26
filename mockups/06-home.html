@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup 06 — The Wall (Homepage)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,400;1,700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body class="home-body">
+
+<!-- WALL GLYPHS — carved concrete lettering, placed in negative space -->
+<div class="wall-glyph" style="top:8%;left:-3%;">TRUE</div>
+<div class="wall-glyph" style="top:5%;right:-4%;opacity:0.08;">GAV</div>
+<div class="wall-glyph" style="top:55%;left:55%;font-size:clamp(3rem,8vw,7rem);opacity:0.06;">READ</div>
+
+<!-- TOP BAR -->
+<header class="top-bar">
+  <div class="brand-mark"><a href="/"><span class="accent">TRUE</span>GAV</a></div>
+  <nav class="nav-row">
+    <a href="/" class="active">posts</a>
+    <a href="/tags/">tags</a>
+    <a href="/about/">about</a>
+  </nav>
+</header>
+
+<!-- CARD GRID -->
+<main class="card-grid">
+
+  <!-- 1 FEATURED — spans full width -->
+  <a href="/posts/pfhor-conspiracy/" class="card featured">
+    <span class="card-date">2026·06·19 &mdash; latest</span>
+    <h2 class="card-title">The Pfhor Conspiracy: Re-reading Marathon's Narrative After Three Decades</h2>
+    <p class="card-excerpt">A deep dive into the terminal texts, the AIs, and what Bungie was really saying about consciousness and control. The Pfhor weren't the real enemy — Durandal was never on your side.</p>
+    <div class="card-tags">
+      <span class="tag-neon pink">lore</span>
+      <span class="tag-neon teal">meta</span>
+      <span class="tag-neon green">games</span>
+    </div>
+  </a>
+
+  <!-- 2 -->
+  <a href="/posts/accountability/" class="card">
+    <span class="card-date">2026·05·28</span>
+    <h2 class="card-title">On Accountability &amp; Mistakes</h2>
+    <p class="card-excerpt">A personal reflection on getting things catastrophically wrong and learning to sit with the shame.</p>
+    <div class="card-tags">
+      <span class="tag-neon red">personal</span>
+      <span class="tag-neon pink">reflection</span>
+    </div>
+  </a>
+
+  <!-- 3 -->
+  <a href="/posts/quant-backtester/" class="card">
+    <span class="card-date">2026·05·15</span>
+    <h2 class="card-title">Building a Quant Backtester from Scratch in Rust</h2>
+    <p class="card-excerpt">Order books, event loops, and the joy of zero-allocation hot paths. How I built a trading simulation engine that doesn't allocate.</p>
+    <div class="card-tags">
+      <span class="tag-neon amber">projects</span>
+      <span class="tag-neon amber">rust</span>
+      <span class="tag-neon amber">trading</span>
+    </div>
+  </a>
+
+  <!-- 4 -->
+  <a href="/posts/terminal-aesthetics/" class="card">
+    <span class="card-date">2026·04·02</span>
+    <h2 class="card-title">Why Flat, Sharp, &amp; Bold</h2>
+    <p class="card-excerpt">The Marathon aesthetic as a complete design philosophy for the web. Typography, color, texture, layout — from game engine to CSS.</p>
+    <div class="card-tags">
+      <span class="tag-neon pink">design</span>
+      <span class="tag-neon blue">web</span>
+      <span class="tag-neon teal">philosophy</span>
+    </div>
+  </a>
+
+  <!-- 5 -->
+  <a href="/posts/web2-triager/" class="card">
+    <span class="card-date">2026·03·18</span>
+    <h2 class="card-title">AI Bug Bounty Triage</h2>
+    <p class="card-excerpt">Automating the noise away from vulnerability reports. What works, what doesn't, and why most triage bots fail.</p>
+    <div class="card-tags">
+      <span class="tag-neon amber">projects</span>
+      <span class="tag-neon pink">security</span>
+    </div>
+  </a>
+
+  <!-- 6 — spans full width -->
+  <a href="/posts/dithering-experiments/" class="card">
+    <span class="card-date">2026·02·22</span>
+    <h2 class="card-title">Experiments with Bayer Dithering &amp; Noise Textures in CSS</h2>
+    <p class="card-excerpt">SVG feTurbulence, halftone patterns, and how to make the web feel like concrete. A technical deep dive with interactive demos.</p>
+    <div class="card-tags">
+      <span class="tag-neon pink">design</span>
+      <span class="tag-neon blue">css</span>
+      <span class="tag-neon teal">experiments</span>
+    </div>
+  </a>
+
+  <!-- 7 -->
+  <a href="/posts/marathon-retrospective/" class="card">
+    <span class="card-date">2026·01·10</span>
+    <h2 class="card-title">Marathon at 32: The Game That Taught Us to Read the Walls</h2>
+    <div class="card-tags">
+      <span class="tag-neon green">games</span>
+      <span class="tag-neon green">retro</span>
+      <span class="tag-neon pink">design</span>
+    </div>
+  </a>
+
+  <!-- 8 -->
+  <a href="/posts/concrete-and-ink/" class="card">
+    <span class="card-date">2025·12·05</span>
+    <h2 class="card-title">Concrete &amp; Ink: Brutalist Design for the Static Web</h2>
+    <p class="card-excerpt">How the brutalist architectural movement maps onto web design — not as trend-chasing, but as honest material practice.</p>
+    <div class="card-tags">
+      <span class="tag-neon pink">design</span>
+      <span class="tag-neon teal">philosophy</span>
+    </div>
+  </a>
+
+</main>
+
+<!-- BOTTOM BAR — anchored, stable -->
+<footer class="bottom-bar">
+  <div class="bottom-left">
+    <div class="search-chunk">
+      <span class="search-prompt">/</span>
+      <input type="text" class="search-input" placeholder="search posts...">
+    </div>
+  </div>
+  <div class="bottom-right">
+    <span><kbd>j</kbd>/<kbd>k</kbd> browse</span>
+    <span><kbd>/</kbd> search</span>
+    <span><kbd>enter</kbd> open</span>
+    <span><kbd>esc</kbd> back</span>
+  </div>
+</footer>
+
+</body>
+</html>

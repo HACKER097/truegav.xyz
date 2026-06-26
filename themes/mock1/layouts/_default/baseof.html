@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Locale | default "en" }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} — {{ .Site.Title }}{{ end }}</title>
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . | plainify | truncate 160 }}{{ else }}{{ .Site.Params.description }}{{ end }}{{ end }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,700;0,800;1,100;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ "css/style.css" | relURL }}">
+  {{ with .OutputFormats.Get "rss" -}}
+    {{ printf `<link rel=%q type=%q href=%q title=%q>` .Rel .MediaType.Type .RelPermalink $.Site.Title | safeHTML }}
+  {{ end }}
+</head>
+<body>
+  <div id="read-progress"></div>
+  <div class="scan-lines"></div>
+
+  <div class="bg-watermark">
+    <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="wm-pattern" x="0" y="0" width="380" height="88" patternUnits="userSpaceOnUse">
+          <text x="0" y="66" font-family="JetBrains Mono, monospace" font-size="60" font-weight="800"
+                fill="white" letter-spacing="4">{{ .Site.Title | upper }}</text>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#wm-pattern)" transform="rotate(-12, 600, 400)"/>
+    </svg>
+  </div>
+
+  {{ partial "nav.html" . }}
+
+  <div class="page-wrap">
+    {{ block "main" . }}{{ end }}
+    {{ partial "footer.html" . }}
+  </div>
+
+  <svg class="corner-geo" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg" id="corner-geo"></svg>
+
+  <script src="{{ "js/main.js" | relURL }}"></script>
+</body>
+</html>

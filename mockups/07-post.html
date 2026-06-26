@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup 07 — The Zine (Post)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,400;1,700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body class="post-body">
+
+<!-- TOP STRIP -->
+<header class="strip">
+  <a href="/">← TRUE<span style="color:var(--l-red)">GAV</span></a>
+  <span class="stamp">issue no. 04 &middot; april 2026</span>
+  <a href="/">all issues →</a>
+</header>
+
+<!-- ZINE GRID -->
+<article class="zine">
+
+  <!-- MAIN COLUMN -->
+  <div class="zine-main">
+
+    <div class="title-block">
+      <h1>Why Flat,<br>Sharp,<br>&amp; Bold</h1>
+      <div class="dateline">published 2026·04·02 &nbsp;&middot;&nbsp; 8 min read &nbsp;&middot;&nbsp; #design #web</div>
+    </div>
+
+    <div class="zine-body">
+
+      <p>There is a particular aesthetic that runs through Bungie's <strong>Marathon</strong> trilogy — a visual language born from the hard constraints of a 2.5D engine, yet so distinct that it defines the game's identity more than any plot point or mechanic. Flat textures. Sharp geometry. Bold color choices. Everything feels architectural, intentional, <em>constructed</em>.</p>
+
+      <p>This aesthetic isn't just a retro curiosity. It's a complete design philosophy that maps cleanly onto the web — onto typography, layout systems, color theory, and interaction design. And it's been hiding in plain sight, ignored by a web that chose smoothness over materiality, comfort over conviction.</p>
+
+      <blockquote>
+        The constraint forces intentionality. When you can't do realistic curves, you make geometry meaningful. When you can't do smooth gradients, you make every color choice deliberate. The result is a world that feels designed rather than simulated — every surface is a decision, not a render.
+      </blockquote>
+
+      <h2>The Three Forces</h2>
+
+      <p>The Marathon aesthetic is defined by three forces held in careful tension. <strong>Flatness</strong> — surfaces that read as planes, not as simulations of material. No gradients, no soft shadows, no glossy effects. Every surface is a decision, not a render. <strong>Sharpness</strong> — the enforced orthogonal geometry of a 2.5D engine created a world of 90-degree angles, of architectural precision. No organic curves, no smooth transitions. Everything is crisp, deliberate, structural. <strong>Boldness</strong> — limited color palettes used with maximum impact. When you only have a few colors, every one of them has to carry weight. There is no room for the timid.</p>
+
+      <p>Together, these forces produce something that feels more like <em>architecture</em> than like graphics. You're not looking at pictures — you're moving through a constructed space where every element justifies its presence or gets deleted. This is the opposite of the "muddy brown realism" that dominated late-2000s game design, and it's why the aesthetic keeps returning — it's honest.</p>
+
+      <h3>From Game Engine to CSS</h3>
+
+      <p>Translating this into web design means understanding what each force demands of the medium. <strong>Flat:</strong> solid color backgrounds. No box-shadow blur except where it serves an explicit structural purpose (like the card lift on hover). Border-radius at or near zero — sharp corners are architectural, not aggressive. <strong>Sharp:</strong> 2px solid borders as the primary visual separator. Geometric layouts. Structural clarity over decoration. Every line on the page should be load-bearing. <strong>Bold:</strong> 2–3 accent colors on a neutral base. High contrast between surface levels. Typography that asserts itself — not timid, not apologetic, not trying to blend in.</p>
+
+      <p>But there's a fourth element that most discussions miss entirely, and it's the one that separates this aesthetic from mere minimalism: <strong>texture</strong>. Marathon's surfaces weren't just flat colors — they were flat colors with the faint grain of a texture map, the subtle noise of a low-color-depth display, the materiality of concrete and metal. This is where dithering enters the web design vocabulary, and it's what makes a site feel like a <em>place</em> rather than a document.</p>
+
+      <h2>The Texture Layer</h2>
+
+      <p>Using SVG <code>feTurbulence</code> filters, we can add grain to any surface — concrete texture on dark backgrounds, paper grain on light ones, static on interactive elements. The noise is never the point. It's the <em>feeling</em> of material. This page you're reading has three texture layers: paper grain, photocopy scan lines at 7% opacity, and fractal noise multiplied into the surface. It should feel like something you could reach out and touch.</p>
+
+      <pre><code>/* Three-layer paper texture — visible, unapologetic */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  background:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 2px,
+      var(--ink) 2px, var(--ink) 3px
+    ),
+    url("noise-coarse.svg");
+  mix-blend-mode: multiply;
+}</code></pre>
+
+      <p>The technique is remarkably lightweight — SVG data URIs require zero HTTP requests and add about 500 bytes to the stylesheet. No JavaScript, no canvas, no WebGL. The entire texture system renders natively in the browser's compositor. And yet the <em>feel</em> it adds is immeasurable. A website without texture is a website without skin — it exists only in the abstract, never in the hand.</p>
+
+      <h2>Typography as Architecture</h2>
+
+      <p>Marathon's type choices were architectural before "architectural typography" was a named trend. <strong>Bank Gothic</strong> — a geometric sans-serif with square proportions, designed by Morris Fuller Benton in the 1930s — was used for the game's manual and UI elements. It's a font that looks like it was built from steel beams: severe, unyielding, monumental. <strong>Modula Tall</strong>, used for title displays, is tall and condensed — vertical, imposing, like a skyscraper compressed into letterform.</p>
+
+      <p>For the web, the open-source <strong>Squarish Sans CT</strong> (created by Tim Larson for the Aleph One community) carries the Bank Gothic lineage under the SIL Open Font License. Paired with a monospace body font — JetBrains Mono, in this case — you get the full spectrum: architectural headers that feel carved into the wall, and precise body text that feels like printed matter on coarse paper.</p>
+
+      <p>The display font you're reading now is <strong>Syne</strong> — standing in for Squarish Sans CT in these mockups. It shares the same DNA: geometric construction, bold weight, architectural presence. The body is JetBrains Mono at 0.95rem with 1.8 line-height — comfortable for long reading but never soft.</p>
+
+      <h2>Breaking Rules Intentionally</h2>
+
+      <p>Here's the paradox at the heart of this design: chaos must be <em>composed</em>. Every broken rule needs a reason. Every overlap needs to create interesting negative space rather than visual clutter. Every empty area needs to feel like breathing room, not a layout failure. The cards on the homepage are rotated between -1.5 and +1.5 degrees — enough to feel organic and hand-assembled, not enough to look drunk or broken.</p>
+
+      <p>The blockquote you saw earlier breaks out of the text column into the margin. The h1 spills 5% past the left edge. The code blocks push 4% past the right. These breakouts are the personality of the page — they're the "chaos" in the system. But they're earned: the rest of the reading experience is disciplined, comfortable, and predictable. The chaos is punctuation, not prose.</p>
+
+      <h2>Where This Goes</h2>
+
+      <p>The flat/sharp/bold aesthetic isn't a "retro" style — it's a <em>materially honest</em> one. It rejects the fake depth of drop shadows, the artificial smoothness of heavy border-radius, the muddy midtones of "modern" palette generators. In their place, it offers something rarer: a design that you can feel in your fingertips.</p>
+
+      <p>This isn't a Hugo theme. This isn't a blog template. This is a zine spread printed on coarse paper and pinned to a concrete wall. Every element — the rotating dateline, the bleeding code blocks, the pull quote that invades your margin, the scan lines in the texture — is here because it <em>refuses</em> to apologize for existing. The goal isn't legibility above all. The goal is <strong>presence</strong> above all. Legibility follows from presence, not from politeness.</p>
+
+    </div>
+
+    <!-- POST NAV -->
+    <nav class="zine-nav">
+      <a href="#">
+        <span class="nav-arrow">← previous issue</span>
+        <span class="nav-post-title">Experiments with Bayer Dithering &amp; Noise Textures in CSS</span>
+      </a>
+      <a href="#">
+        <span class="nav-arrow">next issue →</span>
+        <span class="nav-post-title">AI Bug Bounty Triage — Automating the Noise Away</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <!-- MARGIN COLUMN -->
+  <aside class="zine-margin">
+
+    <div class="margin-note">
+      <span class="note-label">In this issue</span>
+      Part four in an ongoing series about material design for the static web. Previously: Concrete &amp; Ink, Bayer Dithering, and The Wall of Noise.
+    </div>
+
+    <div class="margin-note">
+      <span class="note-label">Reading time</span>
+      About 8 minutes at normal pace. Longer if you stop to examine the textures — which you should.
+    </div>
+
+    <div class="margin-note">
+      <span class="note-label">Tags</span>
+      <div class="margin-tags">
+        <a href="#">design</a>
+        <a href="#">web</a>
+        <a href="#">philosophy</a>
+        <a href="#">css</a>
+      </div>
+    </div>
+
+    <div class="margin-note">
+      <span class="margin-progress">§ 04 of 08</span>
+    </div>
+
+  </aside>
+
+</article>
+
+</body>
+</html>

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup 01 — The Wall (Homepage)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   MOCKUP 01 — THE WALL
+   Homepage. Posts arrayed on a brutalist concrete wall.
+   ============================================================ */
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --void:#161a1e;
+  --concrete:#1c2128;
+  --concrete-hi:#222930;
+  --chalk:#e0e4dc;
+  --dust:#8a9490;
+  --dust-dim:#4a5450;
+  --rebar:#2a323c;
+  --rebar-hi:#363f4a;
+
+  --amber:#f6dbab;
+  --teal:#9cf0e2;
+  --blue:#add7f4;
+  --green:#a2ebbf;
+  --red:#ef9ea5;
+  --purple:#c5aef3;
+  --coral:#efa8ba;
+  --orange:#f4c5a3;
+  --cyan:#9fe1ee;
+
+  --display:'Orbitron','Bank Gothic','Squarish Sans CT',sans-serif;
+  --mono:'JetBrains Mono','Courier New',monospace;
+
+  --s1:0.25rem;--s2:0.5rem;--s3:0.75rem;--s4:1rem;
+  --s6:1.5rem;--s8:2rem;--s12:3rem;--s16:4rem;--s24:6rem;
+  --max:54rem;
+}
+
+/* ---- noise: SVG feTurbulence as data URI ---- */
+/* grain overlay — monochrome fractal noise, ~4% visible */
+
+@property --grain{
+  syntax:'<number>';
+  initial-value:0.04;
+  inherits:true;
+}
+
+html{
+  font-size:16px;
+  scroll-behavior:smooth;
+  background:var(--void);
+}
+
+body{
+  font-family:var(--mono);
+  color:var(--chalk);
+  line-height:1.75;
+  max-width:var(--max);
+  margin:0 auto;
+  padding:var(--s12) var(--s8) var(--s8);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  background:var(--void);
+}
+
+/* ---- the grain ---- */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  pointer-events:none;
+  opacity:var(--grain);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-repeat:repeat;
+}
+
+/* ============================================================
+   HEADER — the monumental slab
+   ============================================================ */
+
+.site-head{
+  margin-bottom:var(--s12);
+  padding-bottom:var(--s6);
+  position:relative;
+}
+
+.site-head::after{
+  content:'';
+  display:block;
+  height:3px;
+  margin-top:var(--s6);
+  background:
+    linear-gradient(90deg,var(--rebar-hi) 0%,var(--rebar) 40%,var(--rebar) 60%,var(--rebar-hi) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23d)'/%3E%3C/svg%3E");
+  opacity:0.6;
+}
+
+.site-title{
+  font-family:var(--display);
+  font-size:clamp(2rem,5vw,3.5rem);
+  font-weight:900;
+  letter-spacing:-0.02em;
+  line-height:1;
+  color:var(--chalk);
+  text-transform:uppercase;
+  margin-bottom:var(--s2);
+}
+
+.site-title a{
+  color:inherit;
+  text-decoration:none;
+  transition:color 0.12s;
+}
+.site-title a:hover{color:var(--green)}
+
+.site-subhead{
+  display:flex;
+  align-items:baseline;
+  gap:var(--s6);
+  flex-wrap:wrap;
+  margin-top:var(--s3);
+}
+
+.site-tagline{
+  font-family:var(--mono);
+  font-size:0.85rem;
+  color:var(--dust);
+}
+.site-tagline::before{content:'# ';color:var(--green)}
+
+.site-nav{
+  display:flex;
+  gap:var(--s6);
+}
+
+.site-nav a{
+  font-family:var(--display);
+  font-size:0.75rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  color:var(--dust);
+  text-decoration:none;
+  position:relative;
+  transition:color 0.12s;
+  padding-bottom:2px;
+}
+
+.site-nav a::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:2px;
+  background:var(--teal);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform 0.15s;
+  /* dithered edge via background */
+  background:
+    repeating-linear-gradient(90deg,var(--teal) 0px,var(--teal) 2px,transparent 2px,transparent 4px);
+}
+.site-nav a:hover{color:var(--teal)}
+.site-nav a:hover::after{transform:scaleX(1)}
+
+.site-nav a.active{color:var(--green)}
+.site-nav a.active::after{
+  transform:scaleX(1);
+  background:repeating-linear-gradient(90deg,var(--green) 0px,var(--green) 2px,transparent 2px,transparent 4px);
+}
+
+/* ============================================================
+   SECTION HEAD — the carved label
+   ============================================================ */
+
+.section-head{
+  display:flex;
+  align-items:baseline;
+  gap:var(--s3);
+  margin-bottom:var(--s6);
+}
+
+.section-label{
+  font-family:var(--display);
+  font-size:0.8rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.12em;
+  color:var(--teal);
+}
+
+.section-count{
+  font-family:var(--mono);
+  font-size:0.7rem;
+  color:var(--dust-dim);
+}
+
+/* ============================================================
+   POST LIST — broadsheets on the wall
+   ============================================================ */
+
+.post-wall{
+  display:flex;
+  flex-direction:column;
+}
+
+.post-bill{
+  display:grid;
+  grid-template-columns:120px 1fr auto;
+  align-items:baseline;
+  gap:0 var(--s4);
+  padding:var(--s3) var(--s4);
+  text-decoration:none;
+  border-left:4px solid transparent;
+  position:relative;
+  transition:border-left-color 0.1s,background 0.15s;
+  cursor:pointer;
+}
+
+.post-bill::after{
+  content:'';
+  position:absolute;
+  bottom:0;
+  left:0;right:0;
+  height:1px;
+  background:
+    linear-gradient(90deg,transparent 0%,var(--rebar) 20%,var(--rebar) 80%,transparent 100%);
+}
+
+.post-bill:first-child::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;right:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent 0%,var(--rebar) 20%,var(--rebar) 80%,transparent 100%);
+}
+
+.post-bill-date{
+  font-family:var(--mono);
+  font-size:0.78rem;
+  color:var(--amber);
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+  transition:color 0.12s;
+}
+
+.post-bill-title{
+  font-family:var(--mono);
+  font-size:1rem;
+  font-weight:700;
+  color:var(--chalk);
+  letter-spacing:-0.01em;
+  transition:color 0.12s;
+}
+
+.post-bill-tags{
+  font-family:var(--mono);
+  font-size:0.7rem;
+  color:var(--dust-dim);
+  text-align:right;
+  white-space:nowrap;
+}
+
+/* ---- hover: the wall grain intensifies around the row ---- */
+.post-bill:hover{
+  background:
+    linear-gradient(90deg,var(--concrete) 0%,var(--concrete) 4px,transparent 4px),
+    linear-gradient(90deg,transparent 0%,var(--concrete-hi) 2%,var(--concrete-hi) 98%,transparent 100%);
+}
+
+.post-bill:hover .post-bill-title{color:var(--teal)}
+
+/* ---- first post is special — it's the newest ---- */
+.post-bill.is-latest .post-bill-date{
+  color:var(--teal);
+  font-weight:700;
+}
+
+/* ---- selected (keyboard nav) ---- */
+.post-bill.is-selected{
+  border-left-color:var(--teal);
+  background:
+    /* Bayer-dithered left edge glow */
+    repeating-linear-gradient(
+      90deg,
+      var(--teal) 0px,
+      transparent 1px,
+      transparent 2px,
+      var(--teal) 2px,
+      transparent 3px,
+      transparent 4px
+    ),
+    linear-gradient(90deg,var(--concrete) 0%,var(--concrete) 4px,transparent 4px);
+  background-blend-mode:normal;
+}
+.post-bill.is-selected .post-bill-title{color:var(--teal)}
+.post-bill.is-selected .post-bill-title::before{
+  content:'▸ ';
+  color:var(--teal);
+}
+.post-bill.is-selected .post-bill-date{color:var(--teal)}
+
+/* ---- pulse animation for keyboard jump ---- */
+@keyframes wall-pulse{
+  0%{background:var(--concrete-hi)}
+  100%{background:transparent}
+}
+.post-bill.is-pulse{
+  animation:wall-pulse 0.2s ease;
+}
+
+/* ============================================================
+   FOOTER — the ground floor
+   ============================================================ */
+
+.site-foot{
+  margin-top:var(--s16);
+  padding-top:var(--s6);
+  position:relative;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:var(--s4);
+}
+
+.site-foot::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  background:
+    linear-gradient(90deg,var(--rebar-hi) 0%,var(--rebar) 40%,var(--rebar) 60%,var(--rebar-hi) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='e'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23e)'/%3E%3C/svg%3E");
+  opacity:0.6;
+}
+
+.foot-left{
+  font-size:0.68rem;
+  color:var(--dust-dim);
+  letter-spacing:0.03em;
+}
+
+.foot-hints{
+  display:flex;
+  gap:var(--s6);
+  align-items:center;
+}
+.foot-hints span{
+  font-size:0.68rem;
+  color:var(--dust-dim);
+  display:flex;
+  align-items:center;
+  gap:var(--s1);
+}
+.foot-hints kbd{
+  font-family:var(--mono);
+  font-size:0.62rem;
+  color:var(--teal);
+  border:1px solid var(--rebar-hi);
+  padding:0 4px;
+  line-height:1.6;
+  border-radius:1px;
+}
+
+/* ---- search bar (hidden until / pressed) ---- */
+.foot-cmd{
+  display:none;
+  align-items:center;
+  gap:var(--s2);
+}
+.foot-cmd.is-active{display:flex}
+.foot-cmd.is-active ~ .foot-hints{display:none}
+
+.cmd-prompt{
+  font-family:var(--mono);
+  color:var(--teal);
+  font-weight:700;
+  font-size:0.82rem;
+}
+.cmd-input{
+  font-family:var(--mono);
+  font-size:0.82rem;
+  background:transparent;
+  border:none;
+  border-bottom:1px solid var(--rebar);
+  color:var(--chalk);
+  outline:none;
+  width:14ch;
+  caret-color:var(--teal);
+}
+.cmd-input::placeholder{color:var(--dust-dim)}
+
+.cmd-cursor{
+  display:inline-block;
+  width:8px;
+  height:1.1em;
+  background:var(--teal);
+  animation:cursor-blink 1s step-end infinite;
+  vertical-align:text-bottom;
+  margin-left:1px;
+}
+
+@keyframes cursor-blink{
+  50%{opacity:0}
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media(max-width:640px){
+  body{padding:var(--s8) var(--s4) var(--s6)}
+  .site-head{margin-bottom:var(--s8)}
+  .site-title{font-size:1.8rem}
+  .site-subhead{flex-direction:column;gap:var(--s3)}
+  .post-bill{grid-template-columns:90px 1fr;gap:0 var(--s2)}
+  .post-bill-tags{display:none}
+  .site-foot{flex-direction:column;align-items:flex-start}
+}
+
+/* ============================================================
+   SELECTION STYLE
+   ============================================================ */
+
+::selection{background:rgba(156,240,226,0.2);color:var(--chalk)}
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="site-title"><a href="/">TRUE<span style="color:var(--green)">GAV</span></a></div>
+  <div class="site-subhead">
+    <span class="site-tagline">notes on code, games, and the shape of things</span>
+    <nav class="site-nav">
+      <a href="/" class="active">posts</a>
+      <a href="/tags/">tags</a>
+      <a href="/about/">about</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="section-head">
+    <span class="section-label">posts</span>
+    <span class="section-count">12 entries</span>
+  </div>
+
+  <div class="post-wall">
+
+    <!-- POST 1 — latest -->
+    <a href="/posts/pfhor-conspiracy/" class="post-bill is-latest">
+      <span class="post-bill-date">2026-06-19</span>
+      <span class="post-bill-title">The Pfhor Conspiracy: Re-reading Marathon's Narrative</span>
+      <span class="post-bill-tags">#lore #meta</span>
+    </a>
+
+    <!-- POST 2 (this one is "selected" for the mockup) -->
+    <a href="/posts/accountability/" class="post-bill is-selected">
+      <span class="post-bill-date">2026-05-28</span>
+      <span class="post-bill-title">On Accountability and Mistakes — a post about getting things wrong</span>
+      <span class="post-bill-tags">#personal #reflection</span>
+    </a>
+
+    <!-- POST 3 -->
+    <a href="/posts/quant-backtester/" class="post-bill">
+      <span class="post-bill-date">2026-05-15</span>
+      <span class="post-bill-title">Building a Quant Backtester from Scratch in Rust</span>
+      <span class="post-bill-tags">#projects #rust #trading</span>
+    </a>
+
+    <!-- POST 4 -->
+    <a href="/posts/terminal-aesthetics/" class="post-bill">
+      <span class="post-bill-date">2026-04-02</span>
+      <span class="post-bill-title">Why Flat, Sharp, and Bold: A Design Language for the Web</span>
+      <span class="post-bill-tags">#design #web</span>
+    </a>
+
+    <!-- POST 5 -->
+    <a href="/posts/web2-triager/" class="post-bill">
+      <span class="post-bill-date">2026-03-18</span>
+      <span class="post-bill-title">AI Bug Bounty Triage — Automating the Noise Away</span>
+      <span class="post-bill-tags">#projects #security #ai</span>
+    </a>
+
+    <!-- POST 6 -->
+    <a href="/posts/dithering-experiments/" class="post-bill">
+      <span class="post-bill-date">2026-02-22</span>
+      <span class="post-bill-title">Experiments with Bayer Dithering and Noise Textures in CSS</span>
+      <span class="post-bill-tags">#design #css #experiments</span>
+    </a>
+
+    <!-- POST 7 -->
+    <a href="/posts/marathon-retrospective/" class="post-bill">
+      <span class="post-bill-date">2026-01-10</span>
+      <span class="post-bill-title">Marathon at 32: The Game That Taught Us to Read the Walls</span>
+      <span class="post-bill-tags">#games #retro #design</span>
+    </a>
+
+    <!-- POST 8 -->
+    <a href="/posts/concrete-and-ink/" class="post-bill">
+      <span class="post-bill-date">2025-12-05</span>
+      <span class="post-bill-title">Concrete &amp; Ink: Brutalist Design for the Static Web</span>
+      <span class="post-bill-tags">#design #philosophy</span>
+    </a>
+
+  </div>
+</main>
+
+<footer class="site-foot">
+  <span class="foot-left">&copy; 2026 truegav</span>
+  <div class="foot-hints">
+    <span><kbd>j</kbd>/<kbd>k</kbd> navigate</span>
+    <span><kbd>/</kbd> search</span>
+    <span><kbd>enter</kbd> open</span>
+  </div>
+  <div class="foot-cmd">
+    <span class="cmd-prompt">/</span>
+    <input type="text" class="cmd-input" placeholder="search posts...">
+    <span class="cmd-cursor"></span>
+  </div>
+</footer>
+
+<script>
+// Tiny demo: / key toggles search bar
+document.addEventListener('keydown',(e)=>{
+  if(e.key==='/' && document.activeElement===document.body){
+    e.preventDefault();
+    const cmd=document.querySelector('.foot-cmd');
+    cmd.classList.toggle('is-active');
+    if(cmd.classList.contains('is-active')){
+      cmd.querySelector('.cmd-input').focus();
+    }
+  }
+  if(e.key==='Escape'){
+    const cmd=document.querySelector('.foot-cmd');
+    cmd.classList.remove('is-active');
+    document.activeElement.blur();
+  }
+});
+</script>
+
+</body>
+</html>
