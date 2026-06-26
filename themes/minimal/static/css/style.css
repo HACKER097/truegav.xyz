@@ -309,10 +309,6 @@ h3{
   text-align:right;
   justify-content:flex-end;
 }
-.post-reading-time{
-  color:var(--grey_dim);
-  letter-spacing:.02em;
-}
 .post-tags{
   color:var(--grey);
   letter-spacing:.02em;
