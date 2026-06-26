@@ -24,7 +24,7 @@
   window.addEventListener('scroll', function() {
     if (!scrollTicking) {
       requestAnimationFrame(function() {
-        if (nav) nav.classList.toggle('scrolled', window.scrollY > 60);
+        if (nav && window.innerWidth >= 768) nav.classList.toggle('scrolled', window.scrollY > 60);
         if (prog) {
           if (cachedScrollHeight > cachedInnerHeight) {
             var pct = window.scrollY / (cachedScrollHeight - cachedInnerHeight);
