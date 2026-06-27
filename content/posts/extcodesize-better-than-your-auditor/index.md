@@ -1,11 +1,13 @@
 +++
 date = '2022-02-10T14:00:00+05:30'
 draft = false
-title = 'I Found Your extcodesize Bug, I Am Better Than Your Auditor, and I Am Tired'
+title = 'I found your extcodesize bug, I am better than your auditor, and I am tired'
 tags = ['EVM', 'Solidity']
 +++
 
-Every Solidity developer discovers extcodesize returns 0 during construction at exactly the wrong moment: during an exploit. Never during development. Never during testing. Always in production, while money is leaving the contract.
+## The liar embedded in the protocol
+
+extcodesize has been lying to Solidity developers since the Ethereum genesis block. Every developer discovers this lie during an active exploit. Never during development. Never during the audit. Never during code review. Always during a production incident while funds are exiting the protocol.
 
 ```solidity
 function isContract(address addr) view returns (bool) {
@@ -13,9 +15,17 @@ function isContract(address addr) view returns (bool) {
 }
 ```
 
-This function lives in your codebase. I know it does. Every codebase has some variant of it. It compiles. It passes tests. It is completely wrong.
+This function is inside your deployed bytecode. It compiles without warnings. It passes every test you wrote. It is catastrophically wrong during the only moment in its operational lifetime when correctness matters.
 
-During construction, code hasn't been deployed yet. The constructor is running and the EVM hasn't written the bytecode. extcodesize returns 0. Your check says "not a contract" while a contract is literally calling you from its constructor.
+## Yellow Paper Section 7
+
+The EVM constructs contracts in sequenced stages. First the deployment address is computed deterministically. Then an account is created at that address with zero-length code. Then the constructor bytecode executes inside this empty shell. Then and only then, after the constructor returns successfully, the runtime bytecode is committed to account storage.
+
+During stage three, `extcodesize` called on the address of the contract being born returns zero. The contract is literally executing code. The contract is alive. extcodesize reports the contract as dead because the runtime code has not been committed yet.
+
+This is not an implementation bug. This is the designed contract creation sequence specified in mathematical notation in Section 7 of the Yellow Paper. The Yellow Paper is correct. Your function is wrong. They are in disagreement and the Yellow Paper has never lost a disagreement.
+
+An attacker authors a contract whose constructor invokes your protocol. Your protocol runs `extcodesize(msg.sender)`. The caller is a contract mid-birth. extcodesize says zero. Your check concludes: this caller is not a contract. The call proceeds. The constructor completes. Runtime code commits to storage. extcodesize now returns nonzero. The check would now work. The tokens were minted three instructions ago.
 
 ```solidity
 function mint(address to) external {
@@ -24,25 +34,20 @@ function mint(address to) external {
 }
 ```
 
-An attacker deploys a contract. In its constructor, it calls `mint`. The check passes. Tokens minted. Constructor finishes. Now they have tokens AND a full contract.
+Rari Capital watched this happen in production. Multiple NFT projects watched this happen in production. The calendar advanced from 2020 to 2021 to 2022 to now. The exploit did not advance. It sat exactly where it was, waiting for the next developer who writes the same check, deploys the same function, and learns the same lesson by losing the same money.
 
-Rari Capital lost money to this. Multiple NFT projects lost money to this. 2020, 2021, and someone is probably getting exploited right now in 2022.
+## Eight years of free documentation
 
-## Everyone Has Known Since 2016
+Stack Overflow answers explain this. OpenZeppelin's documentation warns about it with explicit text. The Solidity reference docs cover it. Every competent audit firm flags it in every engagement where it appears. The Yellow Paper formalizes the execution sequence mathematically.
 
-Stack Overflow explains it. OpenZeppelin comments warn about it. Solidity docs mention it. Auditors know about it. And yet I keep finding it in production code.
+All of this information is free. All of it has been free for eight years. The information does not prevent the bug because the information does not transfer to new developers. Every generation of Solidity developers writes the same `isContract` function and every generation discovers the same vulnerability at the same cost. The knowledge is free. The experience is expensive. The cost is always denominated in user funds.
 
-There is no EVM opcode for "is this address under construction." Proposals exist. The core devs have decided it's not important. The prank is a permanent feature of the protocol now.
+## The opcode that does not exist
 
-## What to Do
+No EVM instruction provides "query whether this address currently has a constructor in its execution frame." Multiple EIPs have proposed adding one. The core developers reviewed each proposal and declined to implement. The behavior is permanent. The prank is a protocol feature by explicit developer decision.
 
-Nothing. There's no fix. You cannot reliably tell if an address is a contract at the EVM level. Accept that contracts under construction are contracts. Design accordingly.
+The sole reliable check for whether a caller is an EOA is `msg.sender == tx.origin`. This returns true only when the immediate caller is the original transaction signer, which means no contract exists anywhere in the entire call chain. A constructor cannot bypass this because `tx.origin` is always the signing key, always the original source, always the human.
 
-Or keep the bug and wait. Your users will find it before you do.
+This check simultaneously blocks every smart contract wallet on the planet. Multisigs. Relay networks. Account abstraction wallets. Every protocol that claims to support contract钱包 cannot use `tx.origin` because it rejects every contract the protocol needs to serve. The only correct EOA check is incompatible with any protocol that has actual users who hold funds in smart accounts.
 
-```text
-extcodesize during construction: 0
-This is not changing.
-Your code is wrong.
-Deal with it or get rekt.
-```
+You either accept that EOA detection at the EVM level is architecturally impossible and design your protocol around that fact, or you keep the extcodesize check and wait for a constructor to walk through it wearing a disguise. The constructor is already on its way. It is wearing a very convincing costume. Your check will not notice.
